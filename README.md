@@ -39,7 +39,22 @@ cd my-dapp-example
 yarn install
 ```
 
-2. Run a local network in the first terminal:
+2. Set up environment variables:
+
+```
+cd packages/nextjs
+cp .env.example .env.local
+```
+
+Edit `.env.local` and add your Civic Auth Client ID:
+- Get your Client ID from [https://auth.civic.com](https://auth.civic.com)
+- Sign up or log in to the Civic Auth Dashboard
+- Create a new application
+- Copy the Client ID and paste it in `NEXT_PUBLIC_CIVIC_CLIENT_ID`
+
+> **Note**: The app will work without Civic Auth configured, but wallet authentication will not be available. A warning will be shown in development mode if the Client ID is missing.
+
+3. Run a local network in the first terminal:
 
 ```
 yarn chain
