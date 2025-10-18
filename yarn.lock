@@ -4154,6 +4154,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@se-2/nextjs@workspace:packages/nextjs"
   dependencies:
+    "@civic/auth-web3": ^0.8.1
     "@fhevm/mock-utils": 0.0.1-6
     "@heroicons/react": ~2.1.5
     "@tailwindcss/postcss": 4.0.15
