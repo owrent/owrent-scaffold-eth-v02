@@ -84,6 +84,25 @@ Run smart contract test with `yarn hardhat:test`
 - Edit your frontend homepage at `packages/nextjs/app/page.tsx`. For guidance on [routing](https://nextjs.org/docs/app/building-your-application/routing/defining-routes) and configuring [pages/layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts) checkout the Next.js documentation.
 - Edit your deployment scripts in `packages/hardhat/deploy`
 
+## Civic Auth Integration
+
+This template includes Civic Auth for embedded wallet authentication. Two example pages demonstrate different authentication patterns:
+
+### Profile Page (`/profile`)
+Shows how to use the `useUser` hook to:
+- Display user information (name, email, wallet address)
+- Handle loading states
+- Prompt unauthenticated users to sign in
+
+### Civic Auth Example Page (`/civic-auth-example`)
+Demonstrates authentication event handling:
+- Detecting when users sign in or sign out
+- Tracking authentication state changes with `useEffect`
+- Logging authentication events
+- Accessing user information in real-time
+
+Visit these pages after starting your app to see Civic Auth in action.
+
 
 ## Documentation
 
