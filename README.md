@@ -530,8 +530,16 @@ AI_GATEWAY_API_KEY=your_openai_or_anthropic_api_key_here
 
 1. Start your application: `yarn start`
 2. Sign in using Civic Auth
-3. Navigate to **AI Chat** in the header
+3. Navigate to **AI Chat** in the navigation menu
 4. Start chatting with the AI assistant
+
+**Chat Features**:
+- **Real-time Streaming**: See AI responses as they're generated
+- **Tool Execution Indicators**: Visual feedback when AI uses connected services
+- **Keyboard Shortcuts**: Press Enter to send, Shift+Enter for new line
+- **Auto-scroll**: Automatically scrolls to latest messages
+- **Error Handling**: Clear error messages with dismiss option
+- **Loading States**: Visual indicators during AI processing
 
 **Example Prompts**:
 - "What are my recent GitHub repositories?"
@@ -588,9 +596,9 @@ User → AI Chat UI → /api/chat → Civic Auth (token)
 ```
 
 **Components**:
-- `app/api/chat/route.ts` - Chat API endpoint
-- `lib/ai/tools/nexus.ts` - Nexus tools integration
-- `app/ai-chat/page.tsx` - Chat UI (to be implemented)
+- `app/api/chat/route.ts` - Chat API endpoint with streaming support
+- `lib/ai/tools/nexus.ts` - Nexus tools integration with MCP client
+- `app/ai-chat/page.tsx` - Full-featured chat UI with real-time streaming
 
 ### Troubleshooting
 
