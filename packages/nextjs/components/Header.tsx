@@ -4,8 +4,10 @@ import React, { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useUser } from "@civic/auth-web3/react";
 import { hardhat } from "viem/chains";
 import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
+// import { useUser, UserButton } from "@civic/auth-web3/react";
 import { FaucetButton } from "~~/components/scaffold-eth";
 import { useOutsideClick, useTargetNetwork } from "~~/hooks/scaffold-eth";
 
@@ -58,6 +60,66 @@ export const HeaderMenuLinks = () => {
 };
 
 /**
+ * Civic Auth Button Component
+ *
+ * Two implementation options are provided:
+ *
+ * OPTION 1 (Current): Custom implementation using useUser hook
+ * - Provides full control over styling and layout
+ * - Displays "Connect Wallet" button for unauthenticated users
+ * - Shows user info with wallet address and sign-out button for authenticated users
+ * - Uses DaisyUI classes for consistent styling with the rest of the app
+ *
+ * OPTION 2 (Alternative): Pre-built UserButton component
+ * - Quick and easy to implement
+ * - Comes with built-in styling and functionality
+ * - Less customization but faster to deploy
+ *
+ * To use Option 2, replace the CivicAuthButton component below with:
+ * export const CivicAuthButton = () => <UserButton />;
+ *
+ * Or directly in the Header component, replace:
+ * <CivicAuthButton />
+ * with:
+ * <UserButton />
+ */
+export const CivicAuthButton = () => {
+  const { user, signIn, signOut } = useUser();
+
+  // OPTION 1: Custom implementation (current)
+  if (user) {
+    // Authenticated state: show user info and sign-out button
+    const walletAddress = user.walletAddress as string | undefined;
+
+    return (
+      <div className="flex items-center gap-2">
+        <div className="flex flex-col items-end">
+          {user.name && <span className="text-sm font-medium hidden sm:block">{user.name}</span>}
+          {walletAddress && (
+            <span className="text-xs opacity-70 font-mono">
+              {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
+            </span>
+          )}
+        </div>
+        <button type="button" onClick={() => signOut()} className="btn btn-sm btn-ghost hover:btn-secondary">
+          Sign Out
+        </button>
+      </div>
+    );
+  }
+
+  // Unauthenticated state: show connect wallet button
+  return (
+    <button type="button" onClick={() => signIn()} className="btn btn-sm btn-primary">
+      Connect Wallet
+    </button>
+  );
+
+  // OPTION 2: Pre-built UserButton (alternative - uncomment to use)
+  // return <UserButton />;
+};
+
+/**
  * Site header
  */
 export const Header = () => {
@@ -98,8 +160,8 @@ export const Header = () => {
           <HeaderMenuLinks />
         </ul>
       </div>
-      <div className="navbar-end grow mr-4">
-        {/* Civic Auth button will be added here */}
+      <div className="navbar-end grow mr-4 flex items-center gap-2">
+        <CivicAuthButton />
         {isLocalNetwork && <FaucetButton />}
       </div>
     </div>
