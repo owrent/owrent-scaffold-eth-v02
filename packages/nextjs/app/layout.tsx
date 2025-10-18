@@ -1,3 +1,4 @@
+import { CivicAuthProvider } from "@civic/auth-web3/nextjs";
 import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders";
 import { ThemeProvider } from "~~/components/ThemeProvider";
 import "~~/styles/globals.css";
@@ -13,7 +14,9 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
     <html suppressHydrationWarning className={``}>
       <body>
         <ThemeProvider enableSystem>
-          <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>
+          <CivicAuthProvider>
+            <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>
+          </CivicAuthProvider>
         </ThemeProvider>
       </body>
     </html>
