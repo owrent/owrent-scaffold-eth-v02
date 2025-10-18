@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUser } from "@civic/auth-web3/react";
 import { hardhat } from "viem/chains";
-import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, BugAntIcon, ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
 // import { useUser, UserButton } from "@civic/auth-web3/react";
 import { FaucetButton } from "~~/components/scaffold-eth";
 import { useOutsideClick, useTargetNetwork } from "~~/hooks/scaffold-eth";
@@ -30,6 +30,11 @@ export const menuLinks: HeaderMenuLink[] = [
   {
     label: "FHEVM Example",
     href: "/fhevm",
+  },
+  {
+    label: "AI Chat",
+    href: "/ai-chat",
+    icon: <ChatBubbleLeftRightIcon className="h-4 w-4" />,
   },
 ];
 
