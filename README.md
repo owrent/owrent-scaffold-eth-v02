@@ -495,6 +495,124 @@ export default function RootLayout({ children }) {
 - **Support**: Contact Civic support through the dashboard or GitHub issues
 
 
+## AI Chat Integration (Civic Nexus)
+
+This template includes **AI Chat** powered by Civic Nexus, enabling authenticated users to interact with an AI assistant that can access their connected services (GitHub, Slack, Notion, etc.) through the Model Context Protocol (MCP).
+
+### Features
+
+- **Authenticated AI Interactions**: Secure AI chat using Civic Auth tokens
+- **Tool Calling**: AI can access your connected services via Nexus
+- **Streaming Responses**: Real-time AI response generation
+- **Multiple AI Providers**: Support for OpenAI (GPT-4) and Anthropic (Claude)
+- **Privacy-First**: No chat history stored, session-only conversations
+
+### Setup
+
+1. **Get AI Provider API Key**:
+   - For OpenAI: Visit [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+   - For Anthropic: Visit [https://console.anthropic.com/](https://console.anthropic.com/)
+
+2. **Configure Environment Variables**:
+
+```bash
+# Add to packages/nextjs/.env.local
+AI_GATEWAY_API_KEY=your_openai_or_anthropic_api_key_here
+```
+
+3. **Connect Services to Nexus** (Optional):
+   - Visit [https://nexus.civic.com](https://nexus.civic.com)
+   - Sign in with your Civic Auth account
+   - Connect services (GitHub, Slack, Notion, etc.)
+   - AI will have access to these services during chat
+
+### Usage
+
+1. Start your application: `yarn start`
+2. Sign in using Civic Auth
+3. Navigate to **AI Chat** in the header
+4. Start chatting with the AI assistant
+
+**Example Prompts**:
+- "What are my recent GitHub repositories?"
+- "Summarize my Slack messages from today"
+- "Create a new Notion page with meeting notes"
+- "Help me understand this smart contract code"
+
+### API Endpoint
+
+The AI chat is available at `/api/chat`:
+
+**Request**:
+```typescript
+POST /api/chat
+Content-Type: application/json
+
+{
+  "messages": [
+    { "role": "user", "content": "Hello!" }
+  ]
+}
+```
+
+**Response**:
+- Streaming response with Server-Sent Events (SSE)
+- Compatible with `@ai-sdk/react` useChat hook
+
+**Authentication**:
+- Requires valid Civic Auth session
+- Returns 401 if not authenticated
+
+### Configuration
+
+Configure AI provider in `packages/nextjs/.env.local`:
+
+```bash
+# AI Provider API Key (required)
+AI_GATEWAY_API_KEY=your_api_key_here
+
+# AI Provider (optional, default: openai)
+AI_MODEL_PROVIDER=openai  # or 'anthropic'
+
+# AI Model Name (optional)
+AI_MODEL_NAME=gpt-4o  # or 'claude-sonnet-4-5-20250929'
+```
+
+### Architecture
+
+```
+User → AI Chat UI → /api/chat → Civic Auth (token)
+                              → Nexus MCP (tools)
+                              → OpenAI/Anthropic (AI)
+                              → Streaming Response
+```
+
+**Components**:
+- `app/api/chat/route.ts` - Chat API endpoint
+- `lib/ai/tools/nexus.ts` - Nexus tools integration
+- `app/ai-chat/page.tsx` - Chat UI (to be implemented)
+
+### Troubleshooting
+
+**Issue**: "Authentication required" error
+- **Solution**: Sign in with Civic Auth before using AI Chat
+
+**Issue**: AI doesn't have access to my services
+- **Solution**: Connect services at [https://nexus.civic.com](https://nexus.civic.com)
+
+**Issue**: "AI service configuration error"
+- **Solution**: Verify `AI_GATEWAY_API_KEY` is set in `.env.local`
+
+**Issue**: Rate limit errors
+- **Solution**: Wait a few minutes and try again, or upgrade your AI provider plan
+
+### Additional Resources
+
+- **Civic Nexus Dashboard**: [https://nexus.civic.com](https://nexus.civic.com)
+- **Vercel AI SDK Docs**: [https://sdk.vercel.ai/docs](https://sdk.vercel.ai/docs)
+- **OpenAI API Docs**: [https://platform.openai.com/docs](https://platform.openai.com/docs)
+- **Anthropic API Docs**: [https://docs.anthropic.com](https://docs.anthropic.com)
+
 ## Testing Civic Auth Integration
 
 ### Automated Testing
