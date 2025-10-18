@@ -4156,7 +4156,6 @@ __metadata:
   dependencies:
     "@fhevm/mock-utils": 0.0.1-6
     "@heroicons/react": ~2.1.5
-    "@rainbow-me/rainbowkit": 2.2.8
     "@tailwindcss/postcss": 4.0.15
     "@tanstack/react-query": ~5.59.15
     "@trivago/prettier-plugin-sort-imports": ~4.3.0

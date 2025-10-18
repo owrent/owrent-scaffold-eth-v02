@@ -51,9 +51,9 @@ function useWagmiEthersSignerInternal(parameters: {
   });
 
   const connect = () => {
-    // Rainbow Wallet connection is handled by RainbowKit's ConnectButton
+    // Wallet connection is handled by Civic Auth
     // This function is kept for compatibility but doesn't need to do anything
-    console.log("Connect function called - Rainbow Wallet connection handled by RainbowKit");
+    console.log("Connect function called - Wallet connection handled by Civic Auth");
   };
 
   useEffect(() => {
