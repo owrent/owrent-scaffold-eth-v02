@@ -86,33 +86,287 @@ Run smart contract test with `yarn hardhat:test`
 
 ## Civic Auth Integration
 
-This template includes Civic Auth for embedded wallet authentication. Several example implementations demonstrate different authentication patterns:
+This template uses **Civic Auth** for embedded wallet authentication, replacing RainbowKit as the primary authentication mechanism. Civic Auth provides OAuth-based authentication with Web3 wallet integration, enabling users to sign in securely while maintaining their blockchain identity.
 
-### Client-Side Examples
+### Why Civic Auth?
+
+- **Privacy-Preserving**: OAuth-based authentication with Web3 wallet support
+- **Simplified UX**: Single sign-in flow for both authentication and wallet connection
+- **Server-Side Support**: Built-in support for server components, API routes, and server actions
+- **Secure by Default**: Uses PKCE (Proof Key for Code Exchange) for secure OAuth flow
+- **No RainbowKit Dependency**: Lighter bundle size and simpler configuration
+
+### Getting Your Client ID
+
+To use Civic Auth, you need a Client ID from the Civic Auth Dashboard:
+
+1. Visit [https://auth.civic.com](https://auth.civic.com)
+2. Sign up or log in to your account
+3. Click "Create Application" or "New Project"
+4. Fill in your application details:
+   - **Name**: Your application name (e.g., "My DApp")
+   - **Redirect URLs**: Add your development and production URLs
+     - Development: `http://localhost:3000`
+     - Production: `https://yourdomain.com`
+5. Copy the **Client ID** from the application settings
+6. Add it to your `.env.local` file:
+
+```bash
+NEXT_PUBLIC_CIVIC_CLIENT_ID=your_client_id_here
+```
+
+> **Note**: The app will work without Civic Auth configured, but wallet authentication will not be available. A warning will be shown in development mode if the Client ID is missing.
+
+### Configuration Options
+
+Civic Auth can be customized in `packages/nextjs/next.config.ts`:
+
+```typescript
+import { createCivicAuthPlugin } from "@civic/auth-web3/nextjs";
+
+const withCivicAuth = createCivicAuthPlugin({
+  // Required: Your Civic Auth Client ID
+  clientId: process.env.NEXT_PUBLIC_CIVIC_CLIENT_ID || "",
+  
+  // Optional: Customize authentication URLs
+  loginSuccessUrl: "/dashboard",  // Redirect after successful login (default: "/")
+  loginUrl: "/login",              // Custom login page (default: "/")
+  logoutUrl: "/",                  // Redirect after logout (default: "/")
+  
+  // Optional: Base URL for reverse proxy setups
+  baseUrl: "https://yourdomain.com",  // Public-facing URL
+});
+
+export default withCivicAuth(nextConfig);
+```
+
+### Middleware Configuration
+
+The middleware protects routes and verifies authentication. Configure it in `packages/nextjs/middleware.ts`:
+
+```typescript
+import { authMiddleware } from "@civic/auth-web3/nextjs/middleware";
+
+export default authMiddleware();
+
+export const config = {
+  matcher: [
+    // Include: All routes except static assets
+    '/((?!_next|favicon.ico|sitemap.xml|robots.txt|.*\\.jpg|.*\\.png|.*\\.svg|.*\\.gif).*)',
+    
+    // Or specify exact routes to protect:
+    // '/dashboard/:path*',
+    // '/profile/:path*',
+    // '/api/protected/:path*',
+  ],
+};
+```
+
+To exclude specific routes from authentication:
+
+```typescript
+export const config = {
+  matcher: [
+    // Protect all routes except /public and /about
+    '/((?!_next|favicon.ico|public|about).*)',
+  ],
+};
+```
+
+### Usage Examples
+
+#### Client-Side: useUser Hook
+
+The `useUser` hook provides access to authentication state and user information:
+
+```typescript
+import { useUser } from "@civic/auth-web3/react";
+
+export const MyComponent = () => {
+  const { user, signIn, signOut, isLoading } = useUser();
+  
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  
+  if (!user) {
+    return (
+      <button onClick={signIn}>
+        Connect Wallet
+      </button>
+    );
+  }
+  
+  return (
+    <div>
+      <p>Welcome, {user.name || "User"}!</p>
+      <p>Wallet: {user.walletAddress}</p>
+      <button onClick={signOut}>Sign Out</button>
+    </div>
+  );
+};
+```
+
+**With Callbacks:**
+
+```typescript
+const { user } = useUser({
+  onSignIn: () => {
+    console.log("User signed in!");
+    // Refresh data, redirect, show notification, etc.
+  },
+  onSignOut: () => {
+    console.log("User signed out!");
+    // Clear state, redirect to home, etc.
+  },
+});
+```
+
+**User Object Properties:**
+
+```typescript
+interface User {
+  id: string;              // Unique user identifier
+  name?: string;           // Display name (if provided)
+  email?: string;          // Email address (if provided)
+  walletAddress: string;   // Connected Web3 wallet address
+  // Additional custom properties...
+}
+```
+
+#### Server Components: getUser()
+
+Access user information in Next.js Server Components:
+
+```typescript
+import { getUser } from "@civic/auth-web3/nextjs";
+
+export default async function ProfilePage() {
+  const user = await getUser();
+  
+  if (!user) {
+    return <div>Please sign in to view your profile.</div>;
+  }
+  
+  return (
+    <div>
+      <h1>Profile</h1>
+      <p>Name: {user.name}</p>
+      <p>Email: {user.email}</p>
+      <p>Wallet: {user.walletAddress}</p>
+    </div>
+  );
+}
+```
+
+#### API Routes: getUser()
+
+Protect API routes with authentication:
+
+```typescript
+import { getUser } from "@civic/auth-web3/nextjs";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(request: NextRequest) {
+  const user = await getUser();
+  
+  if (!user) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+  
+  // Return user-specific data
+  return NextResponse.json({
+    userId: user.id,
+    walletAddress: user.walletAddress,
+    // ... other data
+  });
+}
+
+export async function POST(request: NextRequest) {
+  const user = await getUser();
+  
+  if (!user) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+  
+  const body = await request.json();
+  
+  // Process authenticated request
+  // ...
+  
+  return NextResponse.json({ success: true });
+}
+```
+
+#### Server Actions: getUser()
+
+Use authentication in Server Actions:
+
+```typescript
+"use server";
+
+import { getUser } from "@civic/auth-web3/nextjs";
+
+export async function updateUserProfile(formData: FormData) {
+  const user = await getUser();
+  
+  if (!user) {
+    throw new Error("Unauthorized");
+  }
+  
+  const name = formData.get("name") as string;
+  
+  // Update user profile in database
+  // ...
+  
+  return { success: true };
+}
+
+export async function getUserData() {
+  const user = await getUser();
+  
+  if (!user) {
+    throw new Error("Unauthorized");
+  }
+  
+  return {
+    id: user.id,
+    name: user.name,
+    walletAddress: user.walletAddress,
+  };
+}
+```
+
+### Example Pages
+
+This template includes several example implementations:
 
 #### Profile Page (`/profile`)
+
 Shows how to use the `useUser` hook to:
+
 - Display user information (name, email, wallet address)
 - Handle loading states
 - Prompt unauthenticated users to sign in
 
-#### Civic Auth Example Page (`/civic-auth-example`)
-Demonstrates authentication event handling:
-- Detecting when users sign in or sign out
-- Tracking authentication state changes with `useEffect`
-- Logging authentication events
-- Accessing user information in real-time
-
-### Server-Side Examples
-
 #### Server Component (`/server-example`)
+
 Demonstrates server-side authentication using `getUser()`:
+
 - Fetching user data in Next.js Server Components
 - Server-side authentication checks
 - Rendering authenticated content without client-side JavaScript
 
 #### API Route (`/api/user`)
+
 Protected API endpoint example showing:
+
 - **GET**: Retrieve authenticated user information
 - **POST**: Update user preferences (example)
 - **DELETE**: Delete user data (example)
@@ -121,7 +375,9 @@ Protected API endpoint example showing:
 - Structured error handling with error codes
 
 #### Server Actions (`app/actions/userActions.ts`)
+
 Server-side functions demonstrating:
+
 - `getUserData()`: Fetch authenticated user data
 - `updateUserPreferences()`: Update user settings
 - `createDeal()`: Business logic with authentication
@@ -129,6 +385,114 @@ Server-side functions demonstrating:
 - Error handling with custom error messages
 
 Visit these pages and endpoints after starting your app to see Civic Auth in action.
+
+### Migration from RainbowKit
+
+If you're migrating from RainbowKit, here's what changed:
+
+#### Hook Replacements
+
+| RainbowKit/Wagmi Hook | Civic Auth Equivalent |
+|-----------------------|-----------------------|
+| `useAccount()` | `useUser()` |
+| `useConnect()` | `useUser().signIn()` |
+| `useDisconnect()` | `useUser().signOut()` |
+| `address` | `user.walletAddress` |
+| `isConnected` | `!!user` |
+| `isConnecting` | `isLoading` |
+
+#### Before (RainbowKit):
+
+```typescript
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+
+const { address, isConnected } = useAccount();
+const { connect } = useConnect();
+const { disconnect } = useDisconnect();
+
+if (!isConnected) {
+  return <button onClick={() => connect()}>Connect</button>;
+}
+
+return (
+  <div>
+    <p>Address: {address}</p>
+    <button onClick={() => disconnect()}>Disconnect</button>
+  </div>
+);
+```
+
+#### After (Civic Auth):
+
+```typescript
+import { useUser } from "@civic/auth-web3/react";
+
+const { user, signIn, signOut } = useUser();
+
+if (!user) {
+  return <button onClick={signIn}>Connect Wallet</button>;
+}
+
+return (
+  <div>
+    <p>Address: {user.walletAddress}</p>
+    <button onClick={signOut}>Sign Out</button>
+  </div>
+);
+```
+
+#### Provider Changes
+
+**Before (RainbowKit):**
+
+```typescript
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <RainbowKitProvider>
+          {children}
+        </RainbowKitProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+**After (Civic Auth):**
+
+```typescript
+import { CivicAuthProvider } from "@civic/auth-web3/nextjs";
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <CivicAuthProvider>
+          {children}
+        </CivicAuthProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+#### Breaking Changes
+
+1. **No separate wallet connection**: Civic Auth combines authentication and wallet connection into a single flow
+2. **Different user object structure**: Access wallet address via `user.walletAddress` instead of `address`
+3. **Server-side support**: Use `getUser()` instead of client-only hooks for server components
+4. **Middleware required**: Add `middleware.ts` to protect routes (not needed with RainbowKit)
+5. **Environment variable**: Use `NEXT_PUBLIC_CIVIC_CLIENT_ID` instead of `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID`
+
+### Additional Resources
+
+- **Civic Auth Documentation**: [https://docs.civic.com](https://docs.civic.com)
+- **Civic Auth Dashboard**: [https://auth.civic.com](https://auth.civic.com)
+- **Civic Auth GitHub**: [https://github.com/civicteam/civic-auth](https://github.com/civicteam/civic-auth)
+- **Support**: Contact Civic support through the dashboard or GitHub issues
 
 
 ## Documentation
