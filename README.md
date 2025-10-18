@@ -495,6 +495,50 @@ export default function RootLayout({ children }) {
 - **Support**: Contact Civic support through the dashboard or GitHub issues
 
 
+## Testing Civic Auth Integration
+
+### Automated Testing
+
+We provide comprehensive automated test scripts to verify the Civic Auth integration:
+
+```bash
+cd packages/nextjs
+
+# Run all tests at once
+./scripts/run-all-tests.sh
+
+# Or run individual test suites:
+./scripts/verify-civic-auth.sh        # Basic integration verification
+./scripts/integration-test.sh         # Integration testing (requires server)
+./scripts/compatibility-test.sh       # Compatibility with existing features
+./scripts/rainbowkit-removal-check.sh # RainbowKit removal verification
+```
+
+### Manual Testing
+
+Complete the manual testing checklist:
+
+```bash
+cd packages/nextjs
+cat TESTING_CHECKLIST.md
+```
+
+The checklist covers:
+- Sign-in/sign-out flows
+- User information display
+- Route protection
+- Browser compatibility
+- Mobile responsiveness
+- Session persistence
+- Server-side user access
+
+### Testing Documentation
+
+For detailed testing information, see:
+- `packages/nextjs/TESTING_CHECKLIST.md` - Manual testing checklist
+- `packages/nextjs/TESTING_SUMMARY.md` - Complete testing summary
+- `packages/nextjs/scripts/` - Automated test scripts
+
 ## Documentation
 
 Visit our [docs](https://docs.scaffoldeth.io) to learn how to start building with Scaffold-ETH 2.
