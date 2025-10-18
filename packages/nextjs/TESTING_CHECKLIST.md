@@ -1,9 +1,11 @@
 # Civic Auth Integration - Manual Testing Checklist
 
 ## Overview
+
 This checklist covers all manual testing scenarios for the Civic Auth integration. Complete each test and mark with ✅ (pass) or ❌ (fail).
 
 ## Prerequisites
+
 - [ ] Application is running (`yarn start`)
 - [ ] Local blockchain is running (`yarn chain`)
 - [ ] Contracts are deployed (`yarn deploy`)
@@ -15,6 +17,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
 ## 13.1 Manual Testing Checklist
 
 ### Sign-In Flow
+
 - [ ] **Test 1.1**: Click "Connect Wallet" button in header
   - Expected: Civic Auth modal opens
   - Result: ___________
@@ -28,6 +31,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
   - Result: ___________
 
 ### User Information Display
+
 - [ ] **Test 2.1**: Check user information in header (authenticated)
   - Expected: User name (if available) and wallet address displayed
   - Result: ___________
@@ -41,6 +45,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
   - Result: ___________
 
 ### Sign-Out Functionality
+
 - [ ] **Test 3.1**: Click "Sign Out" button in header
   - Expected: User is signed out and session cleared
   - Result: ___________
@@ -54,6 +59,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
   - Result: ___________
 
 ### Route Protection
+
 - [ ] **Test 4.1**: Access protected route while unauthenticated
   - Route: `/profile`
   - Expected: Redirected to login page
@@ -75,6 +81,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
   - Result: ___________
 
 ### RainbowKit Removal Verification
+
 - [ ] **Test 5.1**: Inspect header component
   - Expected: No RainbowKit connect button visible
   - Result: ___________
@@ -88,6 +95,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
   - Result: ___________
 
 ### Browser Compatibility
+
 - [ ] **Test 6.1**: Chrome/Chromium
   - Sign-in: ___________
   - Sign-out: ___________
@@ -104,6 +112,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
   - Route protection: ___________
 
 ### Mobile Responsiveness
+
 - [ ] **Test 7.1**: Mobile viewport (375px width)
   - Header layout: ___________
   - Connect button visible: ___________
@@ -127,6 +136,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
 ## 13.2 Integration Testing
 
 ### End-to-End Authentication Flow
+
 - [ ] **Test 8.1**: Complete authentication flow
   1. Start unauthenticated
   2. Click "Connect Wallet"
@@ -136,6 +146,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
   - Result: ___________
 
 ### Session Persistence
+
 - [ ] **Test 9.1**: Refresh page while authenticated
   - Expected: User remains authenticated
   - Result: ___________
@@ -149,6 +160,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
   - Result: ___________
 
 ### Middleware Protection
+
 - [ ] **Test 10.1**: Access `/profile` without authentication
   - Expected: Redirected to login
   - Result: ___________
@@ -163,6 +175,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
   - Result: ___________
 
 ### Server-Side User Access
+
 - [ ] **Test 11.1**: Server component (`/server-example`)
   - Authenticated: Shows user data
   - Unauthenticated: Shows unauthorized message
@@ -179,6 +192,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
   - Result: ___________
 
 ### Error Handling
+
 - [ ] **Test 12.1**: Failed authentication attempt
   - Expected: Error message displayed, user remains unauthenticated
   - Result: ___________
@@ -192,6 +206,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
   - Result: ___________
 
 ### Wallet Address Accessibility
+
 - [ ] **Test 13.1**: Wallet address in header
   - Expected: Visible and correctly formatted
   - Result: ___________
@@ -209,6 +224,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
 ## 13.3 Compatibility with Existing Features
 
 ### FHEVM Functionality
+
 - [ ] **Test 14.1**: Access FHEVM example page (`/fhevm`)
   - Expected: Page loads successfully
   - Result: ___________
@@ -222,6 +238,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
   - Result: ___________
 
 ### Debug UI
+
 - [ ] **Test 15.1**: Access debug contracts page (`/debug`)
   - Expected: Page loads successfully
   - Result: ___________
@@ -235,6 +252,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
   - Result: ___________
 
 ### Block Explorer
+
 - [ ] **Test 16.1**: Access block explorer (`/blockexplorer`)
   - Expected: Page loads successfully
   - Result: ___________
@@ -244,6 +262,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
   - Result: ___________
 
 ### Provider Compatibility
+
 - [ ] **Test 17.1**: ThemeProvider
   - Expected: Theme switching works correctly
   - Result: ___________
@@ -257,6 +276,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
   - Result: ___________
 
 ### Wagmi Hooks (if used)
+
 - [ ] **Test 18.1**: useAccount hook
   - Expected: Returns correct account data
   - Result: ___________
@@ -274,21 +294,27 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
 ## 13.4 Complete RainbowKit Removal Verification
 
 ### Codebase Search
+
 - [ ] **Test 19.1**: Search for "rainbow" in codebase
+
   ```bash
   grep -r "rainbow" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" packages/nextjs/
   ```
+
   - Expected: No results (or only in comments/documentation)
   - Result: ___________
   
 - [ ] **Test 19.2**: Search for "RainbowKit" in codebase
+
   ```bash
   grep -r "RainbowKit" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" packages/nextjs/
   ```
+
   - Expected: No results (or only in comments/documentation)
   - Result: ___________
 
 ### Console Verification
+
 - [ ] **Test 20.1**: Check console on page load
   - Expected: No RainbowKit errors or warnings
   - Result: ___________
@@ -302,21 +328,27 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
   - Result: ___________
 
 ### Dependencies Verification
+
 - [ ] **Test 21.1**: Check package.json
+
   ```bash
   cat packages/nextjs/package.json | grep -i rainbow
   ```
+
   - Expected: No RainbowKit dependency
   - Result: ___________
   
 - [ ] **Test 21.2**: Check node_modules
+
   ```bash
   ls packages/nextjs/node_modules | grep -i rainbow
   ```
+
   - Expected: No RainbowKit folder
   - Result: ___________
 
 ### UI Elements Verification
+
 - [ ] **Test 22.1**: Inspect header component
   - Expected: Only Civic Auth button present
   - Result: ___________
@@ -334,27 +366,32 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
 ## Summary
 
 ### Test Results
+
 - Total Tests: ___________
 - Passed: ___________
 - Failed: ___________
 - Skipped: ___________
 
 ### Critical Issues Found
+
 1. ___________
 2. ___________
 3. ___________
 
 ### Non-Critical Issues Found
+
 1. ___________
 2. ___________
 3. ___________
 
 ### Recommendations
+
 1. ___________
 2. ___________
 3. ___________
 
 ### Sign-Off
+
 - Tester Name: ___________
 - Date: ___________
 - Status: [ ] Approved [ ] Needs Fixes
@@ -362,6 +399,7 @@ This checklist covers all manual testing scenarios for the Civic Auth integratio
 ---
 
 ## Notes
+
 Use this section to document any additional observations, edge cases, or issues encountered during testing.
 
 ___________

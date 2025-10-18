@@ -42,8 +42,6 @@ export const CivicAuthExample = () => {
    * - Show welcome notifications
    */
   const handleSignIn = () => {
-    console.log("User signed in successfully!");
-
     // Add event to log
     setEvents(prev => [
       ...prev,
@@ -73,8 +71,6 @@ export const CivicAuthExample = () => {
    * - Clean up subscriptions
    */
   const handleSignOut = () => {
-    console.log("User signed out");
-
     // Add event to log
     setEvents(prev => [
       ...prev,
@@ -245,14 +241,12 @@ useEffect(() => {
   
   // Detect sign-in
   if (!prevUser && user) {
-    console.log("User signed in!");
     // Fetch user data
     // Show welcome notification
   }
   
   // Detect sign-out
   if (prevUser && !user) {
-    console.log("User signed out");
     // Clear cached data
     // Show goodbye message
   }

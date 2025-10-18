@@ -19,10 +19,10 @@ export const useWagmiEthers = (initialMockChains?: Readonly<Record<number, strin
         return await walletClient.request(args);
       },
       on: () => {
-        console.log("Provider events not fully implemented for wagmi");
+        // Provider events not fully implemented for wagmi
       },
       removeListener: () => {
-        console.log("Provider removeListener not fully implemented for wagmi");
+        // Provider removeListener not fully implemented for wagmi
       },
     } as ethers.Eip1193Provider;
 

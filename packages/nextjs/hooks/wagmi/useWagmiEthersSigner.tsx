@@ -53,7 +53,6 @@ function useWagmiEthersSignerInternal(parameters: {
   const connect = () => {
     // Wallet connection is handled by Civic Auth
     // This function is kept for compatibility but doesn't need to do anything
-    console.log("Connect function called - Wallet connection handled by Civic Auth");
   };
 
   useEffect(() => {
@@ -71,9 +70,6 @@ function useWagmiEthersSignerInternal(parameters: {
     }
 
     try {
-      console.warn(`[useWagmiEthersSignerInternal] create new ethers.BrowserProvider(), chainId=${chainId}`);
-      console.log("Wallet client:", walletClient);
-
       // Convert wagmi wallet client to EIP-1193 provider
       const eip1193Provider: Eip1193Provider = {
         request: async (args: any) => {
@@ -81,10 +77,9 @@ function useWagmiEthersSignerInternal(parameters: {
         },
         on: () => {
           // wagmi handles events differently, so we'll implement a basic version
-          console.log("Provider events not fully implemented for wagmi");
         },
         removeListener: () => {
-          console.log("Provider removeListener not fully implemented for wagmi");
+          // Provider removeListener not fully implemented for wagmi
         },
       };
 
@@ -112,10 +107,7 @@ function useWagmiEthersSignerInternal(parameters: {
       setEthersBrowserProvider(bp);
       setEthersReadonlyProvider(rop);
       setError(undefined);
-
-      console.log("Successfully created ethers providers and signer");
     } catch (err) {
-      console.error("Error creating ethers providers:", err);
       setError(err instanceof Error ? err : new Error(String(err)));
       setEthersSigner(undefined);
       setEthersBrowserProvider(undefined);
@@ -132,10 +124,10 @@ function useWagmiEthersSignerInternal(parameters: {
             return await walletClient.request(args);
           },
           on: () => {
-            console.log("Provider events not fully implemented for wagmi");
+            // Provider events not fully implemented for wagmi
           },
           removeListener: () => {
-            console.log("Provider removeListener not fully implemented for wagmi");
+            // Provider removeListener not fully implemented for wagmi
           },
         } as ethers.Eip1193Provider)
       : undefined,
