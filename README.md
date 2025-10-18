@@ -86,22 +86,49 @@ Run smart contract test with `yarn hardhat:test`
 
 ## Civic Auth Integration
 
-This template includes Civic Auth for embedded wallet authentication. Two example pages demonstrate different authentication patterns:
+This template includes Civic Auth for embedded wallet authentication. Several example implementations demonstrate different authentication patterns:
 
-### Profile Page (`/profile`)
+### Client-Side Examples
+
+#### Profile Page (`/profile`)
 Shows how to use the `useUser` hook to:
 - Display user information (name, email, wallet address)
 - Handle loading states
 - Prompt unauthenticated users to sign in
 
-### Civic Auth Example Page (`/civic-auth-example`)
+#### Civic Auth Example Page (`/civic-auth-example`)
 Demonstrates authentication event handling:
 - Detecting when users sign in or sign out
 - Tracking authentication state changes with `useEffect`
 - Logging authentication events
 - Accessing user information in real-time
 
-Visit these pages after starting your app to see Civic Auth in action.
+### Server-Side Examples
+
+#### Server Component (`/server-example`)
+Demonstrates server-side authentication using `getUser()`:
+- Fetching user data in Next.js Server Components
+- Server-side authentication checks
+- Rendering authenticated content without client-side JavaScript
+
+#### API Route (`/api/user`)
+Protected API endpoint example showing:
+- **GET**: Retrieve authenticated user information
+- **POST**: Update user preferences (example)
+- **DELETE**: Delete user data (example)
+- Returns 401 for unauthenticated requests
+- Includes wallet address in all responses
+- Structured error handling with error codes
+
+#### Server Actions (`app/actions/userActions.ts`)
+Server-side functions demonstrating:
+- `getUserData()`: Fetch authenticated user data
+- `updateUserPreferences()`: Update user settings
+- `createDeal()`: Business logic with authentication
+- `submitBid()`: Protected operations
+- Error handling with custom error messages
+
+Visit these pages and endpoints after starting your app to see Civic Auth in action.
 
 
 ## Documentation
