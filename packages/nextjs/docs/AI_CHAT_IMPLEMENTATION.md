@@ -97,7 +97,7 @@ while (true) {
 
   for (const line of lines) {
     if (!line.trim()) continue;
-    
+
     if (line.startsWith("0:")) {
       // Text chunk format
       const text = line.substring(2).replace(/^"|"$/g, "");
@@ -112,7 +112,7 @@ while (true) {
       // Plain text
       assistantMessage.content += line;
     }
-    
+
     // Update UI
     setMessages(prev => {
       const newMessages = [...prev];
@@ -145,7 +145,7 @@ try {
   <div className="card-body text-center">
     <h2 className="card-title justify-center text-2xl mb-4">AI Chat</h2>
     <p className="mb-6">Please sign in to access the AI chat assistant.</p>
-    <button className="btn btn-primary" onClick={() => window.location.href = "/"}>
+    <button className="btn btn-primary" onClick={() => (window.location.href = "/")}>
       Go to Home
     </button>
   </div>
@@ -158,10 +158,8 @@ try {
 <div className="card bg-base-200 shadow-xl">
   <div className="card-body p-0">
     {/* Messages Display */}
-    <div className="overflow-y-auto max-h-[600px] p-4 space-y-4">
-      {/* Messages */}
-    </div>
-    
+    <div className="overflow-y-auto max-h-[600px] p-4 space-y-4">{/* Messages */}</div>
+
     {/* Error Display */}
     {error && !errorDismissed && (
       <div className="alert alert-error mx-4 mb-4">
@@ -170,7 +168,7 @@ try {
         <button onClick={() => setErrorDismissed(true)}>Dismiss</button>
       </div>
     )}
-    
+
     {/* Message Input */}
     <form onSubmit={onSubmit}>
       <textarea
@@ -193,11 +191,9 @@ try {
 
 ```tsx
 <div className={`chat ${message.role === "user" ? "chat-end" : "chat-start"}`}>
-  <div className={`chat-bubble ${
-    message.role === "user" ? "chat-bubble-primary" : "chat-bubble-secondary"
-  }`}>
+  <div className={`chat-bubble ${message.role === "user" ? "chat-bubble-primary" : "chat-bubble-secondary"}`}>
     <div className="whitespace-pre-wrap">{message.content}</div>
-    
+
     {/* Tool Execution Indicators */}
     {message.toolInvocations?.map(tool => (
       <div key={tool.toolCallId} className="flex items-center gap-2">
@@ -241,7 +237,7 @@ POST /api/chat
     role: "user" | "assistant" | "system";
     content: string;
     toolInvocations?: Array<any>;
-  }>
+  }>;
 }
 ```
 
@@ -277,33 +273,39 @@ Users can connect services at [https://nexus.civic.com](https://nexus.civic.com)
 ### Manual Testing
 
 1. **Unauthenticated Access**:
+
    - Visit `/ai-chat` without signing in
    - Verify sign-in prompt is displayed
    - Click "Go to Home" button
 
 2. **Authenticated Access**:
+
    - Sign in with Civic Auth
    - Visit `/ai-chat`
    - Verify chat interface is displayed
 
 3. **Basic Chat**:
+
    - Type a message and press Enter
    - Verify message appears in chat
    - Verify AI response streams in real-time
    - Verify auto-scroll to latest message
 
 4. **Keyboard Shortcuts**:
+
    - Press Enter to send message
    - Press Shift+Enter to add new line
    - Verify shortcuts work as expected
 
 5. **Error Handling**:
+
    - Trigger an error (e.g., invalid API key)
    - Verify error message is displayed
    - Click "Dismiss" button
    - Verify error is dismissed
 
 6. **Tool Calling** (if services connected):
+
    - Ask AI to access a connected service
    - Verify tool execution indicator appears
    - Verify tool result is incorporated in response
@@ -352,6 +354,7 @@ Potential improvements for future versions:
 ## Support
 
 For issues or questions:
+
 - Check [API Documentation](./API.md) for troubleshooting
 - Review [Testing Guide](./AI_CHAT_TESTING.md) for common issues
 - Contact Civic support through [Civic Auth Dashboard](https://auth.civic.com)

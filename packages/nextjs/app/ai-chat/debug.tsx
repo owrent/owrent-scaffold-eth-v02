@@ -2,11 +2,23 @@
 
 import { useState } from "react";
 
+/**
+ * Debug Chat Component
+ *
+ * Development tool for debugging streaming responses from the AI chat API.
+ * Displays raw chunks and full response for troubleshooting.
+ *
+ * @returns React component for debugging chat streams
+ */
 export default function DebugChat() {
   const [response, setResponse] = useState("");
   const [rawChunks, setRawChunks] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  /**
+   * Test streaming response from chat API
+   * Sends a simple message and displays raw streaming data
+   */
   const testStream = async () => {
     setResponse("");
     setRawChunks([]);
@@ -20,9 +32,6 @@ export default function DebugChat() {
           messages: [{ role: "user", content: "Say hello" }],
         }),
       });
-
-      console.log("Response:", res.status, res.statusText);
-      console.log("Headers:", Object.fromEntries(res.headers.entries()));
 
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
@@ -39,7 +48,6 @@ export default function DebugChat() {
           chunks.push(chunk);
           fullText += chunk;
 
-          console.log("Chunk:", chunk);
           setRawChunks(prev => [...prev, chunk]);
           setResponse(fullText);
         }

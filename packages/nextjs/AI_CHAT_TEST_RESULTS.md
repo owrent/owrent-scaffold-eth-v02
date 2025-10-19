@@ -34,11 +34,13 @@
 ### Observations
 
 **Console Output**:
+
 ```
 [Paste console output here]
 ```
 
 **Tool Execution**:
+
 - Tools loaded: [Yes/No]
 - Number of tools: [X]
 - Tool names: [List tool names]
@@ -70,12 +72,14 @@
 ### Observations
 
 **Streaming Behavior**:
+
 - Progressive display: [Yes/No]
 - Loading indicator shown: [Yes/No]
 - Streaming completed: [Yes/No]
 - Cancellation worked: [Yes/No]
 
 **Performance Metrics**:
+
 - Time to First Byte (TTFB): [X seconds]
 - Streaming rate: [Smooth/Choppy]
 - Total response time: [X seconds]
@@ -97,6 +101,7 @@
 ### Test 7.4.1: Invalid API Key
 
 **Steps**:
+
 1. [ ] Set invalid API key in .env.local
 2. [ ] Restarted server
 3. [ ] Sent message
@@ -105,6 +110,7 @@
 **Result**: [ ] PASS / [ ] FAIL
 
 **Error Message Shown**:
+
 ```
 [Paste error message]
 ```
@@ -116,6 +122,7 @@
 ### Test 7.4.2: Network Disconnection
 
 **Steps**:
+
 1. [ ] Disconnected network
 2. [ ] Sent message
 3. [ ] Verified graceful error handling
@@ -123,6 +130,7 @@
 **Result**: [ ] PASS / [ ] FAIL
 
 **Error Message Shown**:
+
 ```
 [Paste error message]
 ```
@@ -132,6 +140,7 @@
 ### Test 7.4.3: Malformed Request
 
 **Steps**:
+
 1. [ ] Opened browser console
 2. [ ] Sent malformed request via fetch
 3. [ ] Verified 400 error with clear message
@@ -139,6 +148,7 @@
 **Result**: [ ] PASS / [ ] FAIL
 
 **Response**:
+
 ```json
 [Paste response]
 ```
@@ -148,6 +158,7 @@
 ### Test 7.4.4: Unauthenticated Access
 
 **Steps**:
+
 1. [ ] Signed out
 2. [ ] Tried to access /ai-chat
 3. [ ] Verified sign-in prompt appeared
@@ -185,6 +196,7 @@
 ### Observations
 
 **Authentication Flow**:
+
 - Sign-in prompt shown: [Yes/No]
 - Sign-in successful: [Yes/No]
 - Chat interface accessible: [Yes/No]
@@ -202,14 +214,14 @@
 
 Test the AI Chat in multiple browsers:
 
-| Browser | Version | Status | Notes |
-|---------|---------|--------|-------|
-| Chrome | [X.X] | [ ] PASS / [ ] FAIL | |
-| Firefox | [X.X] | [ ] PASS / [ ] FAIL | |
-| Safari | [X.X] | [ ] PASS / [ ] FAIL | |
-| Edge | [X.X] | [ ] PASS / [ ] FAIL | |
-| Mobile Safari | [X.X] | [ ] PASS / [ ] FAIL | |
-| Chrome Mobile | [X.X] | [ ] PASS / [ ] FAIL | |
+| Browser       | Version | Status              | Notes |
+| ------------- | ------- | ------------------- | ----- |
+| Chrome        | [X.X]   | [ ] PASS / [ ] FAIL |       |
+| Firefox       | [X.X]   | [ ] PASS / [ ] FAIL |       |
+| Safari        | [X.X]   | [ ] PASS / [ ] FAIL |       |
+| Edge          | [X.X]   | [ ] PASS / [ ] FAIL |       |
+| Mobile Safari | [X.X]   | [ ] PASS / [ ] FAIL |       |
+| Chrome Mobile | [X.X]   | [ ] PASS / [ ] FAIL |       |
 
 ---
 
@@ -217,14 +229,15 @@ Test the AI Chat in multiple browsers:
 
 Test on different screen sizes:
 
-| Device/Size | Status | Notes |
-|-------------|--------|-------|
-| Desktop (1920x1080) | [ ] PASS / [ ] FAIL | |
-| Laptop (1366x768) | [ ] PASS / [ ] FAIL | |
-| Tablet (768x1024) | [ ] PASS / [ ] FAIL | |
-| Mobile (375x667) | [ ] PASS / [ ] FAIL | |
+| Device/Size         | Status              | Notes |
+| ------------------- | ------------------- | ----- |
+| Desktop (1920x1080) | [ ] PASS / [ ] FAIL |       |
+| Laptop (1366x768)   | [ ] PASS / [ ] FAIL |       |
+| Tablet (768x1024)   | [ ] PASS / [ ] FAIL |       |
+| Mobile (375x667)    | [ ] PASS / [ ] FAIL |       |
 
 **Mobile-Specific Checks**:
+
 - [ ] Chat interface usable on mobile
 - [ ] Keyboard doesn't obscure input
 - [ ] Messages are readable
@@ -235,12 +248,12 @@ Test on different screen sizes:
 
 ## Performance Metrics
 
-| Metric | Target | Actual | Status |
-|--------|--------|--------|--------|
-| Initial Load Time | < 3s | [X]s | [ ] PASS / [ ] FAIL |
-| Time to First Byte | < 2s | [X]s | [ ] PASS / [ ] FAIL |
-| Streaming Rate | Smooth | [Smooth/Choppy] | [ ] PASS / [ ] FAIL |
-| Memory Usage | Stable | [Stable/Increasing] | [ ] PASS / [ ] FAIL |
+| Metric             | Target | Actual              | Status              |
+| ------------------ | ------ | ------------------- | ------------------- |
+| Initial Load Time  | < 3s   | [X]s                | [ ] PASS / [ ] FAIL |
+| Time to First Byte | < 2s   | [X]s                | [ ] PASS / [ ] FAIL |
+| Streaming Rate     | Smooth | [Smooth/Choppy]     | [ ] PASS / [ ] FAIL |
+| Memory Usage       | Stable | [Stable/Increasing] | [ ] PASS / [ ] FAIL |
 
 ---
 
@@ -275,8 +288,8 @@ Test on different screen sizes:
 
 ## Sign-Off
 
-**Tester Signature**: ___________________________  
-**Date**: ___________________________
+**Tester Signature**: ************\_\_\_************  
+**Date**: ************\_\_\_************
 
 **Status**: [ ] APPROVED FOR DEPLOYMENT / [ ] REQUIRES FIXES
 
@@ -293,7 +306,7 @@ Test on different screen sizes:
 - [ ] Slack
 - [ ] Notion
 - [ ] Google Drive
-- [ ] Other: _______________
+- [ ] Other: ******\_\_\_******
 
 ### Sample Messages Tested
 

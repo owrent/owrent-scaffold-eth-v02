@@ -499,6 +499,8 @@ export default function RootLayout({ children }) {
 
 This template includes **AI Chat** powered by Civic Nexus, enabling authenticated users to interact with an AI assistant that can access their connected services (GitHub, Slack, Notion, etc.) through the Model Context Protocol (MCP).
 
+> **📖 For detailed documentation, see [AI_CHAT_README.md](packages/nextjs/AI_CHAT_README.md)**
+
 ### Features
 
 - **Authenticated AI Interactions**: Secure AI chat using Civic Auth tokens

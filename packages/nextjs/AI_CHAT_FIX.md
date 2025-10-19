@@ -3,6 +3,7 @@
 ## Problem
 
 The AI chat feature was experiencing a runtime error:
+
 ```
 Chat error: Cannot read properties of undefined (reading 'filter')
 POST /api/chat 500 in 3508ms
@@ -193,7 +194,8 @@ The chat now provides clear error messages:
 
 ### Issue: Chat still not working
 
-**Solution**: 
+**Solution**:
+
 1. Check browser console for errors
 2. Verify `.env.local` file exists and has the correct key
 3. Restart the development server

@@ -1,9 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useUser } from "@civic/auth-web3/react";
 import { CheckCircleIcon, ExclamationCircleIcon, PaperAirplaneIcon, XCircleIcon } from "@heroicons/react/24/outline";
 
+/**
+ * Message interface for AI chat
+ */
 interface Message {
   id: string;
   role: "user" | "assistant" | "system";
@@ -17,6 +20,22 @@ interface Message {
   }>;
 }
 
+/**
+ * AI Chat Page Component
+ *
+ * Provides a full-featured chat interface for interacting with AI assistants
+ * powered by Civic Nexus. Requires authentication via Civic Auth.
+ *
+ * Features:
+ * - Real-time streaming responses
+ * - Tool execution indicators
+ * - Keyboard shortcuts (Enter to send, Shift+Enter for new line)
+ * - Auto-scroll to latest messages
+ * - Error handling with user-friendly messages
+ * - Performance optimizations for long conversations
+ *
+ * @returns React component for AI chat interface
+ */
 export default function AIChatPage() {
   const { user } = useUser();
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -25,6 +44,144 @@ export default function AIChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+
+  // Limit displayed messages to prevent performance issues with long conversations
+  const MAX_DISPLAYED_MESSAGES = 100;
+  const displayedMessages = messages.slice(-MAX_DISPLAYED_MESSAGES);
+
+  // Handle form submission with keyboard shortcuts (memoized to prevent re-renders)
+  const onSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      if (!inputValue.trim() || isLoading) return;
+
+      const userMessage: Message = {
+        id: Date.now().toString(),
+        role: "user",
+        content: inputValue,
+      };
+
+      setInputValue("");
+      setMessages(prev => [...prev, userMessage]);
+      setIsLoading(true);
+      setError(null);
+      setErrorDismissed(false);
+
+      try {
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            messages: [...messages, userMessage],
+          }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({ error: "Failed to send message" }));
+          console.error("API error:", errorData);
+          throw new Error(errorData.error || "Failed to send message");
+        }
+
+        // Handle streaming response
+        const reader = response.body?.getReader();
+        const decoder = new TextDecoder();
+        const assistantMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          role: "assistant",
+          content: "",
+        };
+
+        setMessages(prev => [...prev, assistantMessage]);
+
+        if (reader) {
+          let buffer = "";
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split("\n");
+
+            // Keep the last incomplete line in the buffer
+            buffer = lines.pop() || "";
+
+            for (const line of lines) {
+              if (!line.trim()) continue;
+
+              // Handle different streaming formats
+              if (line.startsWith("0:")) {
+                // Text chunk format: 0:"text"
+                const text = line.substring(2).replace(/^"|"$/g, "");
+                assistantMessage.content += text;
+              } else if (line.startsWith("data: ")) {
+                // SSE format: data: {...}
+                try {
+                  const data = JSON.parse(line.substring(6));
+                  if (data.choices?.[0]?.delta?.content) {
+                    assistantMessage.content += data.choices[0].delta.content;
+                  }
+                } catch {
+                  // Not JSON, might be plain text
+                  assistantMessage.content += line.substring(6);
+                }
+              } else {
+                // Plain text
+                assistantMessage.content += line;
+              }
+
+              // Update UI
+              setMessages(prev => {
+                const newMessages = [...prev];
+                newMessages[newMessages.length - 1] = { ...assistantMessage };
+                return newMessages;
+              });
+            }
+          }
+
+          // Process any remaining buffer
+          if (buffer.trim()) {
+            if (buffer.startsWith("0:")) {
+              const text = buffer.substring(2).replace(/^"|"$/g, "");
+              assistantMessage.content += text;
+            } else {
+              assistantMessage.content += buffer;
+            }
+
+            setMessages(prev => {
+              const newMessages = [...prev];
+              newMessages[newMessages.length - 1] = { ...assistantMessage };
+              return newMessages;
+            });
+          }
+        }
+      } catch (err) {
+        console.error("Error sending message:", err);
+        setError(err instanceof Error ? err : new Error("An error occurred"));
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [inputValue, isLoading, messages],
+  );
+
+  // Handle textarea key down for keyboard shortcuts (memoized)
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      const form = e.currentTarget.form;
+      if (form) {
+        form.requestSubmit();
+      }
+    }
+  }, []);
+
+  // Handle input change (memoized)
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInputValue(e.target.value);
+  }, []);
 
   // Auto-scroll to latest message
   useEffect(() => {
@@ -57,141 +214,6 @@ export default function AIChatPage() {
     );
   }
 
-  // Handle form submission with keyboard shortcuts
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!inputValue.trim() || isLoading) return;
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      role: "user",
-      content: inputValue,
-    };
-
-    setInputValue("");
-    setMessages(prev => [...prev, userMessage]);
-    setIsLoading(true);
-    setError(null);
-    setErrorDismissed(false);
-
-    try {
-      console.log("Sending message to API...");
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          messages: [...messages, userMessage],
-        }),
-      });
-
-      console.log("Response status:", response.status);
-      console.log("Response headers:", Object.fromEntries(response.headers.entries()));
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: "Failed to send message" }));
-        console.error("API error:", errorData);
-        throw new Error(errorData.error || "Failed to send message");
-      }
-
-      // Handle streaming response
-      const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: "",
-      };
-
-      setMessages(prev => [...prev, assistantMessage]);
-
-      if (reader) {
-        let buffer = "";
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-
-          buffer += decoder.decode(value, { stream: true });
-          const lines = buffer.split("\n");
-
-          // Keep the last incomplete line in the buffer
-          buffer = lines.pop() || "";
-
-          for (const line of lines) {
-            if (!line.trim()) continue;
-
-            // Handle different streaming formats
-            if (line.startsWith("0:")) {
-              // Text chunk format: 0:"text"
-              const text = line.substring(2).replace(/^"|"$/g, "");
-              assistantMessage.content += text;
-            } else if (line.startsWith("data: ")) {
-              // SSE format: data: {...}
-              try {
-                const data = JSON.parse(line.substring(6));
-                if (data.choices?.[0]?.delta?.content) {
-                  assistantMessage.content += data.choices[0].delta.content;
-                }
-              } catch {
-                // Not JSON, might be plain text
-                assistantMessage.content += line.substring(6);
-              }
-            } else {
-              // Plain text
-              assistantMessage.content += line;
-            }
-
-            // Update UI
-            setMessages(prev => {
-              const newMessages = [...prev];
-              newMessages[newMessages.length - 1] = { ...assistantMessage };
-              return newMessages;
-            });
-          }
-        }
-
-        // Process any remaining buffer
-        if (buffer.trim()) {
-          if (buffer.startsWith("0:")) {
-            const text = buffer.substring(2).replace(/^"|"$/g, "");
-            assistantMessage.content += text;
-          } else {
-            assistantMessage.content += buffer;
-          }
-
-          setMessages(prev => {
-            const newMessages = [...prev];
-            newMessages[newMessages.length - 1] = { ...assistantMessage };
-            return newMessages;
-          });
-        }
-      }
-    } catch (err) {
-      console.error("Error sending message:", err);
-      setError(err instanceof Error ? err : new Error("An error occurred"));
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Handle textarea key down for keyboard shortcuts
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      const form = e.currentTarget.form;
-      if (form) {
-        form.requestSubmit();
-      }
-    }
-  };
-
-  // Handle input change
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInputValue(e.target.value);
-  };
-
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <h1 className="text-3xl font-bold mb-6">AI Chat</h1>
@@ -208,7 +230,13 @@ export default function AIChatPage() {
               </div>
             )}
 
-            {messages.map(message => (
+            {messages.length > MAX_DISPLAYED_MESSAGES && (
+              <div className="text-center text-sm text-base-content/60 py-2">
+                Showing last {MAX_DISPLAYED_MESSAGES} messages
+              </div>
+            )}
+
+            {displayedMessages.map(message => (
               <div key={message.id} className={`chat ${message.role === "user" ? "chat-end" : "chat-start"}`}>
                 <div
                   className={`chat-bubble ${message.role === "user" ? "chat-bubble-primary" : "chat-bubble-secondary"}`}

@@ -7,6 +7,7 @@ Welcome to the Owrent Scaffold-ETH 2 documentation!
 ### Chat API (Civic Nexus AI)
 
 - **[Complete API Reference](./API.md)** - Detailed documentation of the `/api/chat` endpoint
+
   - Request/response formats
   - Authentication requirements
   - Error handling
@@ -17,6 +18,7 @@ Welcome to the Owrent Scaffold-ETH 2 documentation!
   - Debugging guide
 
 - **[Quick Reference](./CHAT_API_QUICK_REFERENCE.md)** - Quick lookup guide
+
   - Endpoint summary
   - Common errors
   - Status codes
@@ -24,11 +26,13 @@ Welcome to the Owrent Scaffold-ETH 2 documentation!
   - Environment variables
 
 - **[Changelog](./CHANGELOG_CHAT_API.md)** - Version history
+
   - v1.2.0: Manual message conversion for AI SDK compatibility
   - v1.1.0: Enhanced message validation & error handling
   - v1.0.0: Initial release
 
 - **[Testing Guide](./AI_CHAT_TESTING.md)** - Comprehensive testing documentation
+
   - Quick test procedures
   - Manual testing scenarios
   - API testing with cURL
@@ -50,6 +54,7 @@ Welcome to the Owrent Scaffold-ETH 2 documentation!
 ### Civic Auth Integration
 
 See main [README.md](../../../README.md#civic-auth-integration) for:
+
 - Setup and configuration
 - Usage patterns (client-side, server-side, API routes)
 - Migration from RainbowKit
@@ -58,6 +63,7 @@ See main [README.md](../../../README.md#civic-auth-integration) for:
 ### FHEVM Integration
 
 See [ZAMA Documentation](https://docs.zama.ai/) for:
+
 - Fully Homomorphic Encryption basics
 - FHEVM contract development
 - Encrypted types (euint8, euint16, etc.)
@@ -66,6 +72,7 @@ See [ZAMA Documentation](https://docs.zama.ai/) for:
 ## Testing Documentation
 
 Located in `packages/nextjs/`:
+
 - **[TESTING_CHECKLIST.md](../TESTING_CHECKLIST.md)** - Manual testing checklist
 - **[TESTING_SUMMARY.md](../TESTING_SUMMARY.md)** - Complete testing summary
 - **[scripts/](../scripts/)** - Automated test scripts
@@ -73,6 +80,7 @@ Located in `packages/nextjs/`:
 ## Project Documentation
 
 Located in `.kiro/steering/`:
+
 - **[project-overview.md](../../../.kiro/steering/project-overview.md)** - Project overview
 - **[tech.md](../../../.kiro/steering/tech.md)** - Technology stack
 - **[structure.md](../../../.kiro/steering/structure.md)** - File structure
@@ -86,16 +94,19 @@ Located in `.kiro/steering/`:
 ## External Resources
 
 ### Civic
+
 - [Civic Auth Dashboard](https://auth.civic.com)
 - [Civic Nexus Dashboard](https://nexus.civic.com)
 - [Civic Documentation](https://docs.civic.com)
 
 ### AI Providers
+
 - [Vercel AI SDK](https://sdk.vercel.ai/docs)
 - [OpenAI API](https://platform.openai.com/docs)
 - [Anthropic API](https://docs.anthropic.com)
 
 ### Blockchain
+
 - [Scaffold-ETH 2 Docs](https://docs.scaffoldeth.io)
 - [ZAMA Docs](https://docs.zama.ai)
 - [Hardhat Docs](https://hardhat.org/docs)
@@ -103,6 +114,7 @@ Located in `.kiro/steering/`:
 - [Viem Docs](https://viem.sh)
 
 ### Frontend
+
 - [Next.js Docs](https://nextjs.org/docs)
 - [React Docs](https://react.dev)
 - [Tailwind CSS](https://tailwindcss.com/docs)

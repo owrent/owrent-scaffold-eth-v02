@@ -18,7 +18,7 @@ POST /api/chat
     role: "user" | "assistant" | "system";
     content: string;
     toolInvocations?: any[];
-  }>
+  }>;
 }
 ```
 
@@ -30,25 +30,25 @@ POST /api/chat
 
 ## Status Codes
 
-| Code | Meaning |
-|------|---------|
-| 200 | Success (streaming) |
-| 400 | Invalid request |
-| 401 | Not authenticated |
-| 500 | Server error |
-| 503 | Service unavailable |
+| Code | Meaning             |
+| ---- | ------------------- |
+| 200  | Success (streaming) |
+| 400  | Invalid request     |
+| 401  | Not authenticated   |
+| 500  | Server error        |
+| 503  | Service unavailable |
 
 ## Common Errors
 
-| Error Message | Cause | Solution |
-|--------------|-------|----------|
-| Invalid request: messages array required | Missing/invalid messages | Send valid messages array |
-| No messages provided | Empty array | Send at least one message |
-| No valid messages provided | All messages filtered | Ensure messages have content |
-| Invalid message format | Filtering error | Check message structure |
-| Failed to process messages | Conversion error | Verify message format |
-| Authentication required | No session | Sign in with Civic Auth |
-| AI service not configured | Missing API key | Set AI_GATEWAY_API_KEY |
+| Error Message                            | Cause                    | Solution                     |
+| ---------------------------------------- | ------------------------ | ---------------------------- |
+| Invalid request: messages array required | Missing/invalid messages | Send valid messages array    |
+| No messages provided                     | Empty array              | Send at least one message    |
+| No valid messages provided               | All messages filtered    | Ensure messages have content |
+| Invalid message format                   | Filtering error          | Check message structure      |
+| Failed to process messages               | Conversion error         | Verify message format        |
+| Authentication required                  | No session               | Sign in with Civic Auth      |
+| AI service not configured                | Missing API key          | Set AI_GATEWAY_API_KEY       |
 
 ## Environment Variables
 
@@ -66,22 +66,22 @@ AI_MODEL_NAME=gpt-4o      # or model of choice
 ### Basic (fetch)
 
 ```javascript
-const response = await fetch('/api/chat', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+const response = await fetch("/api/chat", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
-    messages: [{ role: 'user', content: 'Hello!' }]
-  })
+    messages: [{ role: "user", content: "Hello!" }],
+  }),
 });
 ```
 
 ### With @ai-sdk/react
 
 ```typescript
-import { useChat } from '@ai-sdk/react';
+import { useChat } from "@ai-sdk/react";
 
 const { messages, input, handleInputChange, handleSubmit } = useChat({
-  api: '/api/chat'
+  api: "/api/chat",
 });
 ```
 
@@ -91,7 +91,7 @@ const { messages, input, handleInputChange, handleSubmit } = useChat({
 {
   messages: [
     { role: 'user', content: 'What are my repos?' },
-    { 
+    {
       role: 'assistant',
       content: '',
       toolInvocations: [{
@@ -118,6 +118,7 @@ const { messages, input, handleInputChange, handleSubmit } = useChat({
 ## Debugging
 
 **Server Logs**:
+
 ```
 Processing messages: 3
 Using Nexus tools: ['github_repos', 'slack_messages']
@@ -126,6 +127,7 @@ Cleaned messages: <JSON dump>
 ```
 
 **Enable Detailed Logging**:
+
 - Check server console for validation errors
 - Review cleaned messages JSON on conversion errors
 - Monitor tool loading warnings
@@ -136,6 +138,7 @@ Cleaned messages: <JSON dump>
 **Anthropic**: 5 req/min (free tier)
 
 **Handling**:
+
 - Implement client-side throttling
 - Show loading states
 - Handle 429 errors gracefully

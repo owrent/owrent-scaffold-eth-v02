@@ -31,16 +31,19 @@ yarn start
 ### Success Indicators
 
 ✅ **Message Sent**
+
 - Input clears after sending
 - Message appears in chat with user bubble (right side)
 - Loading indicator shows briefly
 
 ✅ **Response Received**
+
 - Assistant message appears (left side)
 - Text streams in character by character
 - No error messages displayed
 
 ✅ **Console Logs** (Check browser DevTools)
+
 ```
 Processing messages: 1
 Converted to core messages: 1
@@ -49,26 +52,31 @@ Converted to core messages: 1
 ### Error Indicators
 
 ❌ **Authentication Error**
+
 - Shows "Please sign in to access the AI chat assistant"
 - Solution: Click "Go to Home" and sign in
 
 ❌ **Configuration Error**
+
 - Shows "AI service not configured"
 - Solution: Add `AI_GATEWAY_API_KEY` to `.env.local`
 
 ❌ **API Error**
+
 - Shows error message in red alert box
 - Check server console for details
 
 ## Manual Testing Scenarios
 
 ### Test 1: Single Message
+
 ```
 User: "Hello"
 Expected: AI responds with greeting
 ```
 
 ### Test 2: Multi-Turn Conversation
+
 ```
 User: "What is Owrent?"
 AI: [Response about Owrent]
@@ -77,18 +85,21 @@ Expected: AI responds with context from previous message
 ```
 
 ### Test 3: Long Message
+
 ```
 User: "Can you explain in detail how confidential invoice factoring works, including the role of sealed-bid auctions, FHEVM encryption, and cross-chain settlement via HTLCs?"
 Expected: AI provides comprehensive response
 ```
 
 ### Test 4: Special Characters
+
 ```
 User: "What's the difference between $ETH and $BTC?"
 Expected: AI handles special characters correctly
 ```
 
 ### Test 5: Code Request
+
 ```
 User: "Show me a simple smart contract example"
 Expected: AI provides code with proper formatting
@@ -155,21 +166,25 @@ Converted to core messages: 1
 ### Error Logs
 
 **Authentication Error:**
+
 ```
 (No logs - returns 401 immediately)
 ```
 
 **Invalid Messages:**
+
 ```
 Invalid messages: undefined
 ```
 
 **Filtering Error:**
+
 ```
 Error filtering messages: [error details]
 ```
 
 **Conversion Error:**
+
 ```
 Error converting messages: [error details]
 Cleaned messages: [JSON output]
@@ -196,8 +211,9 @@ ab -n 10 -c 2 -p message.json -T application/json \
 ```
 
 Where `message.json` contains:
+
 ```json
-{"messages":[{"role":"user","content":"test"}]}
+{ "messages": [{ "role": "user", "content": "test" }] }
 ```
 
 ## Troubleshooting
@@ -205,11 +221,13 @@ Where `message.json` contains:
 ### Issue: No response after sending message
 
 **Check:**
+
 1. Browser console for JavaScript errors
 2. Network tab for failed requests
 3. Server console for error logs
 
 **Common Causes:**
+
 - Missing API key
 - Invalid API key
 - Rate limit exceeded
@@ -218,11 +236,13 @@ Where `message.json` contains:
 ### Issue: Response is very slow
 
 **Check:**
+
 1. AI provider status page
 2. Network latency
 3. Model selection (some models are slower)
 
 **Solutions:**
+
 - Try a faster model (e.g., gpt-3.5-turbo)
 - Check your internet connection
 - Verify API key has sufficient quota
@@ -230,11 +250,13 @@ Where `message.json` contains:
 ### Issue: Error messages in chat
 
 **Check:**
+
 1. Error message content
 2. Server console logs
 3. Browser console logs
 
 **Common Errors:**
+
 - "Authentication required" → Sign in with Civic Auth
 - "AI service not configured" → Add API key to .env.local
 - "Failed to process messages" → Check server logs for details
@@ -284,17 +306,20 @@ describe("Chat Flow", () => {
 ## Success Criteria
 
 ✅ **All tests pass**
+
 - Authentication works
 - Messages send successfully
 - Responses stream correctly
 - Errors handled gracefully
 
 ✅ **Performance acceptable**
+
 - First token < 3 seconds
 - Smooth streaming
 - No memory leaks
 
 ✅ **User experience smooth**
+
 - No UI freezing
 - Clear error messages
 - Intuitive interactions
@@ -312,6 +337,7 @@ describe("Chat Flow", () => {
 ## Support
 
 If tests fail or you encounter issues:
+
 1. Review `AI_CHAT_FIX_SUMMARY.md` for recent fixes
 2. Check `AI_CHAT_SETUP.md` for configuration help
 3. Review `docs/CHANGELOG_CHAT_API.md` for version history

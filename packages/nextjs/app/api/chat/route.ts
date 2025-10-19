@@ -9,7 +9,23 @@ import { getNexusTools } from "~~/lib/ai/tools/nexus";
  * AI Chat API Route
  *
  * Handles POST requests for AI chat interactions with streaming responses.
- * Integrates with Civic Nexus for tool calling and OpenAI for AI generation.
+ * Integrates with Civic Nexus for tool calling and supports both OpenAI and Anthropic models.
+ *
+ * @param request - Next.js request object containing messages array
+ * @returns Streaming response with AI-generated content
+ *
+ * @throws {401} - Authentication required (no valid Civic Auth session)
+ * @throws {400} - Invalid request (missing or malformed messages)
+ * @throws {503} - AI service not configured (missing API key)
+ * @throws {500} - Internal server error (AI provider or processing error)
+ *
+ * @example
+ * POST /api/chat
+ * {
+ *   "messages": [
+ *     { "role": "user", "content": "Hello!" }
+ *   ]
+ * }
  */
 export async function POST(request: NextRequest): Promise<Response> {
   try {
@@ -59,9 +75,6 @@ export async function POST(request: NextRequest): Promise<Response> {
       return NextResponse.json({ error: "No valid messages provided" }, { status: 400 });
     }
 
-    // Log messages for debugging
-    console.log("Processing messages:", cleanedMessages.length);
-
     // Convert UI messages to core messages format
     // The AI SDK expects messages in a specific format
     let coreMessages;
@@ -80,8 +93,6 @@ export async function POST(request: NextRequest): Promise<Response> {
 
         return coreMsg;
       });
-
-      console.log("Converted to core messages:", coreMessages.length);
     } catch (conversionError) {
       console.error("Error converting messages:", conversionError);
       console.error("Cleaned messages:", JSON.stringify(cleanedMessages, null, 2));
@@ -117,7 +128,6 @@ export async function POST(request: NextRequest): Promise<Response> {
       const tools = await getNexusTools();
       if (tools && Object.keys(tools).length > 0) {
         nexusTools = tools;
-        console.log("Using Nexus tools:", Object.keys(tools));
       }
     } catch (toolError) {
       console.warn("Failed to load Nexus tools, continuing without them:", toolError);

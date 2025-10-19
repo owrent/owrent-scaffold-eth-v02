@@ -22,6 +22,7 @@
 #### Changes Made
 
 1. **Removed Dependency on convertToCoreMessages**
+
    - Removed import: `convertToCoreMessages` from "ai" package
    - Implemented custom conversion logic
    - More control over message format
@@ -34,11 +35,11 @@
        role: msg.role === "user" ? "user" : msg.role === "assistant" ? "assistant" : "system",
        content: msg.content,
      };
-     
+
      if (msg.toolInvocations && Array.isArray(msg.toolInvocations)) {
        coreMsg.toolInvocations = msg.toolInvocations;
      }
-     
+
      return coreMsg;
    });
    ```
@@ -99,17 +100,20 @@ Both produce the same output format expected by `streamText()`.
 #### Changes Made
 
 1. **Replaced convertToCoreMessages with Manual Conversion**
+
    - Removed dependency on `convertToCoreMessages` utility
    - Implemented explicit message format conversion
    - Ensures compatibility with AI SDK's expected message structure
    - Provides better control over message transformation
 
 2. **Explicit Role Mapping**
+
    - Maps roles explicitly: "user" → "user", "assistant" → "assistant", other → "system"
    - Prevents role mapping errors from utility function
    - More predictable and debuggable conversion logic
 
 3. **Enhanced Logging**
+
    - Added log after successful conversion: "Converted to core messages: X"
    - Helps track conversion success in production
    - Easier debugging of message format issues
@@ -151,15 +155,15 @@ try {
       role: msg.role === "user" ? "user" : msg.role === "assistant" ? "assistant" : "system",
       content: msg.content,
     };
-    
+
     // Add tool invocations if present
     if (msg.toolInvocations && Array.isArray(msg.toolInvocations)) {
       coreMsg.toolInvocations = msg.toolInvocations;
     }
-    
+
     return coreMsg;
   });
-  
+
   console.log("Converted to core messages:", coreMessages.length);
 } catch (conversionError) {
   console.error("Error converting messages:", conversionError);
@@ -241,23 +245,27 @@ None at this time.
 #### Changes Made
 
 1. **Empty Message Array Validation**
+
    - Added check for empty messages array before processing
    - Returns clear error: "No messages provided"
    - Prevents unnecessary processing of empty requests
 
 2. **Enhanced Message Filtering**
+
    - Added content validation: filters out messages without content
    - Wrapped filtering logic in try-catch for better error handling
    - Explicit type checking: `msg && typeof msg === "object" && msg.content`
    - Converts content to string explicitly: `String(msg.content || "")`
 
 3. **Improved Error Logging**
+
    - Added console.error for invalid messages array
    - Added console.error for filtering errors
    - Added detailed JSON logging of cleaned messages on conversion errors
    - Helps debugging by showing exact message format that failed
 
 4. **Better Error Messages**
+
    - "Invalid message format" for filtering errors
    - "Failed to process messages. Please try again." for conversion errors
    - User-friendly messages that don't expose internal details

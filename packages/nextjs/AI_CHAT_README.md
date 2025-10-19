@@ -203,12 +203,14 @@ AI_MODEL_NAME=gpt-4o
 ### Setup Instructions
 
 1. **Get Civic Auth Client ID**:
+
    - Visit <https://auth.civic.com>
    - Create an application
    - Copy the Client ID
    - Add to `.env.local`
 
 2. **Get AI Provider API Key**:
+
    - **OpenAI**: Visit <https://platform.openai.com/api-keys>
    - **Anthropic**: Visit <https://console.anthropic.com/settings/keys>
    - Copy the API key
@@ -311,6 +313,7 @@ AI_MODEL_NAME=gpt-4o
 ### Debugging Tips
 
 1. **Check Console Logs**:
+
    - Open browser developer tools
    - Look for errors in console
    - Check network tab for failed requests
@@ -330,12 +333,12 @@ AI_MODEL_NAME=gpt-4o
    curl -X POST http://localhost:3000/api/chat \
      -H "Content-Type: application/json" \
      -d '{"messages":[{"role":"user","content":"Hello"}]}'
-   
+
    # Test with invalid message format (should return 400)
    curl -X POST http://localhost:3000/api/chat \
      -H "Content-Type: application/json" \
      -d '{"messages":[{"invalid":"format"}]}'
-   
+
    # Test with missing messages array (should return 400)
    curl -X POST http://localhost:3000/api/chat \
      -H "Content-Type: application/json" \

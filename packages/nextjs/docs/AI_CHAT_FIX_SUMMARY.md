@@ -3,14 +3,16 @@
 ## Problem
 
 The AI chat endpoint was throwing this error:
+
 ```
 Error converting messages: TypeError: Cannot read properties of undefined (reading 'filter')
 at POST (app/api/chat/route.ts:68:43)
 ```
 
 Even though the cleaned messages looked valid:
+
 ```json
-[{"role": "user","content": "hi, how protect my assets"}]
+[{ "role": "user", "content": "hi, how protect my assets" }]
 ```
 
 ## Root Cause
@@ -22,6 +24,7 @@ The `convertToCoreMessages()` function from the `ai` SDK package was internally 
 **Replaced the AI SDK's `convertToCoreMessages()` with custom conversion logic.**
 
 ### Before (Broken):
+
 ```typescript
 import { convertToCoreMessages, streamText } from "ai";
 
@@ -31,6 +34,7 @@ coreMessages = convertToCoreMessages(cleanedMessages);
 ```
 
 ### After (Fixed):
+
 ```typescript
 import { streamText } from "ai";
 
@@ -41,11 +45,11 @@ coreMessages = cleanedMessages.map((msg: any) => {
     role: msg.role === "user" ? "user" : msg.role === "assistant" ? "assistant" : "system",
     content: msg.content,
   };
-  
+
   if (msg.toolInvocations && Array.isArray(msg.toolInvocations)) {
     coreMsg.toolInvocations = msg.toolInvocations;
   }
-  
+
   return coreMsg;
 });
 ```
@@ -61,6 +65,7 @@ coreMessages = cleanedMessages.map((msg: any) => {
 ## Testing
 
 The fix has been tested with:
+
 - ✅ Single user messages
 - ✅ Multi-turn conversations
 - ✅ Messages with tool invocations
@@ -100,6 +105,7 @@ The fix has been tested with:
 ## Support
 
 If you encounter any issues:
+
 1. Check server console logs for detailed error information
 2. Verify your `AI_GATEWAY_API_KEY` is set correctly
 3. Ensure you're signed in with Civic Auth

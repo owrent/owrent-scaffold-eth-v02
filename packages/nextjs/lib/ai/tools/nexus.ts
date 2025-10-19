@@ -38,9 +38,6 @@ export async function getNexusTools(): Promise<Record<string, any>> {
     // Retrieve available tools
     const tools = await mcpClient.tools();
 
-    // Log tools for debugging
-    console.log("Nexus tools response:", JSON.stringify(tools, null, 2));
-
     // Ensure tools is an object, not undefined or null
     if (!tools || typeof tools !== "object") {
       console.warn("Invalid tools response from Nexus, continuing without tools");
