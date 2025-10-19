@@ -34,11 +34,11 @@ else
 fi
 echo ""
 
-echo "Test 2: Malformed JSON (should return 400 or redirect)"
+echo "Test 2: Invalid message format - missing role (should return 400 or redirect)"
 echo "--------------------------------------------------------------"
 RESPONSE=$(curl -s -X POST "$API_URL" \
   -H "Content-Type: application/json" \
-  -d 'invalid json' \
+  -d '{"messages":[{"content":"Hello"}]}' \
   -w "\nHTTP_STATUS:%{http_code}")
 
 HTTP_STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS" | cut -d: -f2)
@@ -54,7 +54,47 @@ else
 fi
 echo ""
 
-echo "Test 3: Unauthenticated request with valid payload (should return 401 or redirect)"
+echo "Test 3: Invalid message format - missing content (should return 400 or redirect)"
+echo "--------------------------------------------------------------"
+RESPONSE=$(curl -s -X POST "$API_URL" \
+  -H "Content-Type: application/json" \
+  -d '{"messages":[{"role":"user"}]}' \
+  -w "\nHTTP_STATUS:%{http_code}")
+
+HTTP_STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS" | cut -d: -f2)
+BODY=$(echo "$RESPONSE" | sed '/HTTP_STATUS/d')
+
+echo "HTTP Status: $HTTP_STATUS"
+echo "Response Body: $BODY"
+
+if [ "$HTTP_STATUS" = "400" ] || [ "$HTTP_STATUS" = "307" ]; then
+  echo -e "${GREEN}✓ Test 3 PASSED${NC}"
+else
+  echo -e "${RED}✗ Test 3 FAILED - Expected 400 or 307, got $HTTP_STATUS${NC}"
+fi
+echo ""
+
+echo "Test 4: Malformed JSON (should return 400 or redirect)"
+echo "--------------------------------------------------------------"
+RESPONSE=$(curl -s -X POST "$API_URL" \
+  -H "Content-Type: application/json" \
+  -d 'invalid json' \
+  -w "\nHTTP_STATUS:%{http_code}")
+
+HTTP_STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS" | cut -d: -f2)
+BODY=$(echo "$RESPONSE" | sed '/HTTP_STATUS/d')
+
+echo "HTTP Status: $HTTP_STATUS"
+echo "Response Body: $BODY"
+
+if [ "$HTTP_STATUS" = "400" ] || [ "$HTTP_STATUS" = "307" ]; then
+  echo -e "${GREEN}✓ Test 4 PASSED${NC}"
+else
+  echo -e "${RED}✗ Test 4 FAILED - Expected 400 or 307, got $HTTP_STATUS${NC}"
+fi
+echo ""
+
+echo "Test 5: Unauthenticated request with valid payload (should return 401 or redirect)"
 echo "--------------------------------------------------------------"
 RESPONSE=$(curl -s -X POST "$API_URL" \
   -H "Content-Type: application/json" \
@@ -68,9 +108,9 @@ echo "HTTP Status: $HTTP_STATUS"
 echo "Response Body: $BODY"
 
 if [ "$HTTP_STATUS" = "401" ] || [ "$HTTP_STATUS" = "307" ]; then
-  echo -e "${GREEN}✓ Test 3 PASSED${NC}"
+  echo -e "${GREEN}✓ Test 5 PASSED${NC}"
 else
-  echo -e "${RED}✗ Test 3 FAILED - Expected 401 or 307, got $HTTP_STATUS${NC}"
+  echo -e "${RED}✗ Test 5 FAILED - Expected 401 or 307, got $HTTP_STATUS${NC}"
 fi
 echo ""
 

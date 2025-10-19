@@ -38,6 +38,29 @@ export async function getNexusTools(): Promise<Record<string, any>> {
     // Retrieve available tools
     const tools = await mcpClient.tools();
 
+    // Log tools for debugging
+    console.log("Nexus tools response:", JSON.stringify(tools, null, 2));
+
+    // Ensure tools is an object, not undefined or null
+    if (!tools || typeof tools !== "object") {
+      console.warn("Invalid tools response from Nexus, continuing without tools");
+      return {};
+    }
+
+    // If tools is an array, convert it to an object
+    if (Array.isArray(tools)) {
+      console.warn("Tools is an array, converting to object");
+      const toolsObject: Record<string, any> = {};
+      tools.forEach((tool: any, index: number) => {
+        if (tool && tool.name) {
+          toolsObject[tool.name] = tool;
+        } else {
+          toolsObject[`tool_${index}`] = tool;
+        }
+      });
+      return toolsObject;
+    }
+
     return tools;
   } catch (error) {
     // Log error without exposing sensitive information

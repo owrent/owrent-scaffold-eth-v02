@@ -614,6 +614,14 @@ User → AI Chat UI → /api/chat → Civic Auth (token)
 **Issue**: Rate limit errors
 - **Solution**: Wait a few minutes and try again, or upgrade your AI provider plan
 
+### API Documentation
+
+For detailed API documentation, including request/response formats, error handling, and usage examples, see:
+
+- **[Chat API Documentation](packages/nextjs/docs/API.md)** - Complete API reference
+- **[Quick Reference](packages/nextjs/docs/CHAT_API_QUICK_REFERENCE.md)** - Quick lookup guide
+- **[Changelog](packages/nextjs/docs/CHANGELOG_CHAT_API.md)** - Version history and changes
+
 ### Additional Resources
 
 - **Civic Nexus Dashboard**: [https://nexus.civic.com](https://nexus.civic.com)

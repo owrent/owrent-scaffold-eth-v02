@@ -75,6 +75,7 @@ export default function AIChatPage() {
     setErrorDismissed(false);
 
     try {
+      console.log("Sending message to API...");
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
@@ -85,8 +86,12 @@ export default function AIChatPage() {
         }),
       });
 
+      console.log("Response status:", response.status);
+      console.log("Response headers:", Object.fromEntries(response.headers.entries()));
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ error: "Failed to send message" }));
+        console.error("API error:", errorData);
         throw new Error(errorData.error || "Failed to send message");
       }
 
@@ -102,25 +107,65 @@ export default function AIChatPage() {
       setMessages(prev => [...prev, assistantMessage]);
 
       if (reader) {
+        let buffer = "";
+
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
 
-          const chunk = decoder.decode(value);
-          const lines = chunk.split("\n");
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+
+          // Keep the last incomplete line in the buffer
+          buffer = lines.pop() || "";
 
           for (const line of lines) {
+            if (!line.trim()) continue;
+
+            // Handle different streaming formats
             if (line.startsWith("0:")) {
-              // Text chunk
-              const text = line.substring(3).replace(/^"|"$/g, "");
+              // Text chunk format: 0:"text"
+              const text = line.substring(2).replace(/^"|"$/g, "");
               assistantMessage.content += text;
-              setMessages(prev => {
-                const newMessages = [...prev];
-                newMessages[newMessages.length - 1] = { ...assistantMessage };
-                return newMessages;
-              });
+            } else if (line.startsWith("data: ")) {
+              // SSE format: data: {...}
+              try {
+                const data = JSON.parse(line.substring(6));
+                if (data.choices?.[0]?.delta?.content) {
+                  assistantMessage.content += data.choices[0].delta.content;
+                }
+              } catch {
+                // Not JSON, might be plain text
+                assistantMessage.content += line.substring(6);
+              }
+            } else {
+              // Plain text
+              assistantMessage.content += line;
             }
+
+            // Update UI
+            setMessages(prev => {
+              const newMessages = [...prev];
+              newMessages[newMessages.length - 1] = { ...assistantMessage };
+              return newMessages;
+            });
           }
+        }
+
+        // Process any remaining buffer
+        if (buffer.trim()) {
+          if (buffer.startsWith("0:")) {
+            const text = buffer.substring(2).replace(/^"|"$/g, "");
+            assistantMessage.content += text;
+          } else {
+            assistantMessage.content += buffer;
+          }
+
+          setMessages(prev => {
+            const newMessages = [...prev];
+            newMessages[newMessages.length - 1] = { ...assistantMessage };
+            return newMessages;
+          });
         }
       }
     } catch (err) {

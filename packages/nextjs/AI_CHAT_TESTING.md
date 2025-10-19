@@ -11,6 +11,26 @@ This document provides comprehensive testing instructions for the Civic Nexus AI
 3. **Civic Auth Account**: Sign up at https://auth.civic.com
 4. **Nexus Services Connected**: Connect at least one service at https://nexus.civic.com
 
+## Quick Start
+
+### Run All Manual Tests
+
+For a guided walkthrough of all manual tests:
+```bash
+cd packages/nextjs
+./scripts/run-manual-tests.sh
+```
+
+This interactive script will guide you through tests 7.2-7.5 with step-by-step instructions.
+
+### Run Automated API Tests
+
+For automated API endpoint testing:
+```bash
+cd packages/nextjs
+./scripts/test-chat-api.sh
+```
+
 ## Test 1: Chat API Endpoint
 
 ### Automated Testing
@@ -26,6 +46,7 @@ cd packages/nextjs
 | Test Case | Expected Status | Expected Behavior |
 |-----------|----------------|-------------------|
 | Missing messages array | 307 (redirect) or 400 | Middleware redirects unauthenticated requests |
+| Invalid message format | 307 (redirect) or 400 | Message validation fails (missing role/content) |
 | Malformed JSON | 307 (redirect) or 400 | Request validation fails |
 | Unauthenticated request | 307 (redirect) or 401 | Authentication required |
 
@@ -46,15 +67,29 @@ To test authenticated requests:
 
 3. **Test with curl**:
    ```bash
+   # Valid request
    curl -X POST http://localhost:3000/api/chat \
      -H "Content-Type: application/json" \
      -b "civic_auth_session=YOUR_SESSION_COOKIE" \
      -d '{"messages":[{"role":"user","content":"Hello"}]}'
+   
+   # Invalid message format (missing role)
+   curl -X POST http://localhost:3000/api/chat \
+     -H "Content-Type: application/json" \
+     -b "civic_auth_session=YOUR_SESSION_COOKIE" \
+     -d '{"messages":[{"content":"Hello"}]}'
+   
+   # Invalid message format (missing content)
+   curl -X POST http://localhost:3000/api/chat \
+     -H "Content-Type: application/json" \
+     -b "civic_auth_session=YOUR_SESSION_COOKIE" \
+     -d '{"messages":[{"role":"user"}]}'
    ```
 
 ### Verification Checklist
 
 - [ ] 400 error for missing messages array
+- [ ] 400 error for invalid message format (missing role or content)
 - [ ] 400 error for malformed JSON
 - [ ] 401 error or redirect for unauthenticated requests
 - [ ] Streaming response for valid authenticated requests
@@ -175,7 +210,7 @@ Loaded Nexus tools: github_list_repos, slack_search, notion_query, ...
 
 #### 4.3 Malformed Request
 
-1. **Test in browser console**:
+1. **Test missing messages array**:
    ```javascript
    fetch('/api/chat', {
      method: 'POST',
@@ -184,10 +219,46 @@ Loaded Nexus tools: github_list_repos, slack_search, notion_query, ...
    }).then(r => r.json()).then(console.log)
    ```
 
-2. **Expected response**:
+   **Expected response**:
    ```json
    {
      "error": "Invalid request: messages array required"
+   }
+   ```
+
+2. **Test invalid message format**:
+   ```javascript
+   fetch('/api/chat', {
+     method: 'POST',
+     headers: { 'Content-Type': 'application/json' },
+     body: JSON.stringify({ 
+       messages: [{ invalid: 'format' }] 
+     })
+   }).then(r => r.json()).then(console.log)
+   ```
+
+   **Expected response**:
+   ```json
+   {
+     "error": "Invalid message format: each message must have role and content"
+   }
+   ```
+
+3. **Test partial message format**:
+   ```javascript
+   fetch('/api/chat', {
+     method: 'POST',
+     headers: { 'Content-Type': 'application/json' },
+     body: JSON.stringify({ 
+       messages: [{ role: 'user' }] // missing content
+     })
+   }).then(r => r.json()).then(console.log)
+   ```
+
+   **Expected response**:
+   ```json
+   {
+     "error": "Invalid message format: each message must have role and content"
    }
    ```
 
@@ -216,7 +287,8 @@ Loaded Nexus tools: github_list_repos, slack_search, notion_query, ...
 |----------|-----------------|
 | Invalid API key | "AI service configuration error. Please contact support." |
 | Network error | "An error occurred while processing your request" |
-| Malformed request | "Invalid request: messages array required" |
+| Missing messages array | "Invalid request: messages array required" |
+| Invalid message format | "Invalid message format: each message must have role and content" |
 | Unauthenticated | "Authentication required" |
 
 ## Test 5: Authentication Requirements
@@ -356,46 +428,20 @@ Test on different screen sizes:
 
 ## Test Results Template
 
-Use this template to document your test results:
+A comprehensive test results template is available at `AI_CHAT_TEST_RESULTS.md`.
 
-```markdown
-## Test Results - [Date]
+To use it:
+1. Copy the template: `cp AI_CHAT_TEST_RESULTS.md AI_CHAT_TEST_RESULTS_[DATE].md`
+2. Fill in the test results as you perform each test
+3. Save the completed results for documentation
 
-### Environment
-- Node Version: 
-- Browser: 
-- OS: 
-
-### Test 1: Chat API Endpoint
-- [ ] PASS / [ ] FAIL
-- Notes: 
-
-### Test 2: Nexus Tools Integration
-- [ ] PASS / [ ] FAIL
-- Notes: 
-
-### Test 3: Streaming Functionality
-- [ ] PASS / [ ] FAIL
-- Notes: 
-
-### Test 4: Error Handling
-- [ ] PASS / [ ] FAIL
-- Notes: 
-
-### Test 5: Authentication Requirements
-- [ ] PASS / [ ] FAIL
-- Notes: 
-
-### Issues Found
-1. 
-2. 
-3. 
-
-### Recommendations
-1. 
-2. 
-3. 
-```
+The template includes:
+- Detailed test steps for each scenario
+- Space for observations and screenshots
+- Browser compatibility checklist
+- Mobile responsiveness checklist
+- Performance metrics tracking
+- Sign-off section for approval
 
 ## Automated Testing (Future)
 
