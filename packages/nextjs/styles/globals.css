@@ -2,11 +2,39 @@
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-
 @theme {
+  /* Glassmorphism Design System */
+  
+  /* Shadow Scale */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px rgb(0 0 0 / 0.07);
+  --shadow-lg: 0 8px 16px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 12px 24px rgb(0 0 0 / 0.12);
+  --shadow-glass: 0 8px 32px rgb(0 0 0 / 0.06);
   --shadow-center: 0 0 12px -2px rgb(0 0 0 / 0.05);
+  
+  /* Dark Mode Shadows */
+  --shadow-sm-dark: 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-md-dark: 0 4px 6px rgb(0 0 0 / 0.4);
+  --shadow-lg-dark: 0 8px 16px rgb(0 0 0 / 0.5);
+  --shadow-xl-dark: 0 12px 24px rgb(0 0 0 / 0.6);
+  --shadow-glass-dark: 0 8px 32px rgb(0 0 0 / 0.12);
+  
+  /* Border Radius Scale */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.875rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+  
+  /* Animations */
   --animate-pulse-fast: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @plugin "daisyui" {
