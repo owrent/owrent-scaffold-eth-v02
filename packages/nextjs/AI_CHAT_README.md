@@ -303,8 +303,29 @@ A: Currently, tools are managed through Civic Nexus. Contact Civic support for c
 **Q: Does this work offline?**
 A: No, AI chat requires an internet connection to communicate with AI providers and Nexus services.
 
+## Testing
+
+For comprehensive testing instructions, see the [AI Chat Testing Guide](./AI_CHAT_TESTING.md).
+
+The testing guide covers:
+- Chat API endpoint testing (automated and manual)
+- Nexus tools integration testing
+- Streaming functionality testing
+- Error handling scenarios
+- Authentication requirements
+- Browser compatibility
+- Mobile responsiveness
+- Performance testing
+
+Quick test:
+```bash
+cd packages/nextjs
+./scripts/test-chat-api.sh
+```
+
 ## Additional Resources
 
+- **AI Chat Testing Guide**: [AI_CHAT_TESTING.md](./AI_CHAT_TESTING.md)
 - **Civic Nexus Documentation**: https://docs.civic.com/nexus
 - **Civic Nexus Dashboard**: https://nexus.civic.com
 - **Civic Auth Documentation**: https://docs.civic.com/auth
