@@ -250,19 +250,19 @@ export default function AIChatPage() {
                         <div key={tool.toolCallId} className="flex items-center gap-2 text-sm opacity-80">
                           {tool.state === "result" && (
                             <>
-                              <CheckCircleIcon className="w-4 h-4 text-success" />
+                              <CheckCircleIcon className="w-4 h-4 text-success" aria-hidden="true" />
                               <span>Used tool: {tool.toolName}</span>
                             </>
                           )}
                           {tool.state === "call" && (
                             <>
-                              <span className="loading loading-spinner loading-xs"></span>
+                              <span className="loading loading-spinner loading-xs" aria-label="Loading"></span>
                               <span>Using tool: {tool.toolName}</span>
                             </>
                           )}
                           {tool.state === "error" && (
                             <>
-                              <XCircleIcon className="w-4 h-4 text-error" />
+                              <XCircleIcon className="w-4 h-4 text-error" aria-hidden="true" />
                               <span>Tool failed: {tool.toolName}</span>
                             </>
                           )}
@@ -289,9 +289,14 @@ export default function AIChatPage() {
           {/* Error Display */}
           {error && !errorDismissed && (
             <div className="alert alert-error mx-4 mb-4">
-              <ExclamationCircleIcon className="w-6 h-6" />
+              <ExclamationCircleIcon className="w-6 h-6" aria-hidden="true" />
               <span>{error.message || "An error occurred. Please try again."}</span>
-              <button type="button" className="btn btn-sm btn-ghost" onClick={() => setErrorDismissed(true)}>
+              <button
+                type="button"
+                className="btn btn-sm btn-ghost"
+                onClick={() => setErrorDismissed(true)}
+                aria-label="Dismiss error message"
+              >
                 Dismiss
               </button>
             </div>
@@ -309,11 +314,16 @@ export default function AIChatPage() {
                 rows={3}
                 disabled={isLoading}
               />
-              <button type="submit" className="btn btn-primary" disabled={isLoading || !inputValue.trim()}>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={isLoading || !inputValue.trim()}
+                aria-label="Send message"
+              >
                 {isLoading ? (
-                  <span className="loading loading-spinner loading-sm"></span>
+                  <span className="loading loading-spinner loading-sm" aria-label="Sending"></span>
                 ) : (
-                  <PaperAirplaneIcon className="w-5 h-5" />
+                  <PaperAirplaneIcon className="w-5 h-5" aria-hidden="true" />
                 )}
               </button>
             </div>

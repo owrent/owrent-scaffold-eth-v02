@@ -25,7 +25,7 @@ export const Footer = () => {
             {nativeCurrencyPrice > 0 && (
               <div>
                 <div className="btn btn-primary btn-sm font-normal gap-1 cursor-auto">
-                  <CurrencyDollarIcon className="h-4 w-4" />
+                  <CurrencyDollarIcon className="h-4 w-4" aria-hidden="true" />
                   <span>{nativeCurrencyPrice.toFixed(2)}</span>
                 </div>
               </div>
@@ -34,7 +34,7 @@ export const Footer = () => {
               <>
                 <Faucet />
                 <Link href="/blockexplorer" passHref className="btn btn-primary btn-sm font-normal gap-1">
-                  <MagnifyingGlassIcon className="h-4 w-4" />
+                  <MagnifyingGlassIcon className="h-4 w-4" aria-hidden="true" />
                   <span>Block Explorer</span>
                 </Link>
               </>
@@ -54,7 +54,7 @@ export const Footer = () => {
             <span>·</span>
             <div className="flex justify-center items-center gap-2">
               <p className="m-0 text-center">
-                Built with <HeartIcon className="inline-block h-4 w-4" /> at
+                Built with <HeartIcon className="inline-block h-4 w-4" aria-hidden="true" /> at
               </p>
               <a
                 className="flex justify-center items-center gap-1"

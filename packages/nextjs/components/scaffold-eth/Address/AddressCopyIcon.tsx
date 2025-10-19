@@ -12,6 +12,7 @@ export const AddressCopyIcon = ({ className, address }: { className?: string; ad
         copyAddressToClipboard(address);
       }}
       type="button"
+      aria-label={isAddressCopiedToClipboard ? "Address copied" : "Copy address to clipboard"}
     >
       {isAddressCopiedToClipboard ? (
         <CheckCircleIcon className={className} aria-hidden="true" />
