@@ -14,6 +14,21 @@ The Owrent design system is built on glassmorphism principles, providing a moder
 
 ## Theme Configuration
 
+### ThemeProvider Setup
+
+The theme system is configured in `app/layout.tsx` with the following settings:
+
+```typescript
+<ThemeProvider 
+  attribute="data-theme"           // Uses data-theme attribute for styling
+  defaultTheme="light"             // Defaults to light mode
+  enableSystem={true}              // Respects system preferences
+  storageKey="owrent-theme"        // Persists theme choice in localStorage
+>
+  {children}
+</ThemeProvider>
+```
+
 ### Using the Theme Hook
 
 ```typescript
@@ -35,10 +50,12 @@ function MyComponent() {
 ### Theme Switching
 
 The theme system supports:
+
 - Manual theme selection (light/dark)
-- System preference detection
-- Persistent theme storage
+- System preference detection (via `enableSystem`)
+- Persistent theme storage (via `storageKey="owrent-theme"`)
 - Smooth transitions between themes
+- Default light mode with system override capability
 
 ## Glassmorphism Utilities
 
