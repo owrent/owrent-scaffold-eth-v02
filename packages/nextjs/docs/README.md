@@ -49,6 +49,36 @@ Welcome to the Owrent Scaffold-ETH 2 documentation!
   - Testing procedures
   - Known limitations and future enhancements
 
+## Design System Documentation
+
+### Glassmorphism UI Redesign
+
+- **[Design System](./DESIGN_SYSTEM.md)** - Complete design system documentation
+  - Color system (light/dark mode)
+  - Typography scale
+  - Spacing and layout
+  - Component patterns
+  - Glassmorphism effects
+
+- **[Icon System](./ICON_SYSTEM.md)** - Icon usage guidelines
+  - Icon library (@heroicons/react)
+  - Standard sizes and contexts
+  - Semantic icon mapping
+  - Accessibility requirements
+  - Color contrast guidelines
+  - Usage examples and best practices
+
+- **[Icon System Audit](./ICON_SYSTEM_AUDIT.md)** - Icon audit results
+  - Current icon usage analysis
+  - Standardization recommendations
+  - Migration checklist
+
+- **[Spacing & Layout System](./SPACING_LAYOUT_SYSTEM.md)** - Layout guidelines
+  - Spacing scale
+  - Layout patterns
+  - Responsive design
+  - Grid system
+
 ## Feature Documentation
 
 ### Civic Auth Integration
