@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useUser } from "@civic/auth-web3/react";
 import { CheckCircleIcon, ExclamationCircleIcon, PaperAirplaneIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { CardGlass } from "~~/components/ui";
 
 /**
  * Message interface for AI chat
@@ -198,31 +199,33 @@ export default function AIChatPage() {
   // Show sign-in prompt if not authenticated
   if (!user) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="card bg-base-200 shadow-xl max-w-2xl mx-auto">
-          <div className="card-body text-center">
-            <h2 className="card-title justify-center text-2xl mb-4">AI Chat</h2>
+      <div className="flex items-center justify-center min-h-screen">
+        <CardGlass className="w-96 p-6">
+          <div className="flex flex-col items-center text-center">
+            <h2 className="text-2xl font-semibold mb-4">AI Chat</h2>
             <p className="mb-6">Please sign in to access the AI chat assistant.</p>
-            <div className="card-actions justify-center">
-              <button type="button" className="btn btn-primary" onClick={() => (window.location.href = "/")}>
-                Go to Home
-              </button>
-            </div>
+            <button type="button" className="btn btn-primary" onClick={() => (window.location.href = "/")}>
+              Go to Home
+            </button>
           </div>
-        </div>
+        </CardGlass>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <h1 className="text-3xl font-bold mb-6">AI Chat</h1>
+    <main className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="max-w-4xl mx-auto">
+        {/* Page Header */}
+        <header className="mb-8">
+          <h1 className="text-4xl font-bold mb-2">AI Chat</h1>
+          <p className="text-muted-foreground">Chat with your AI assistant powered by Civic Nexus</p>
+        </header>
 
-      {/* Chat Interface */}
-      <div className="card bg-base-200 shadow-xl">
-        <div className="card-body p-0">
+        {/* Chat Interface */}
+        <CardGlass className="p-0 overflow-hidden">
           {/* Messages Display */}
-          <div className="overflow-y-auto max-h-[600px] p-4 space-y-4">
+          <div className="overflow-y-auto max-h-[600px] p-6 space-y-4">
             {messages.length === 0 && (
               <div className="text-center text-base-content/60 py-8">
                 <p>Start a conversation with the AI assistant.</p>
@@ -237,9 +240,13 @@ export default function AIChatPage() {
             )}
 
             {displayedMessages.map(message => (
-              <div key={message.id} className={`chat ${message.role === "user" ? "chat-end" : "chat-start"}`}>
+              <div key={message.id} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
-                  className={`chat-bubble ${message.role === "user" ? "chat-bubble-primary" : "chat-bubble-secondary"}`}
+                  className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                    message.role === "user"
+                      ? "bg-primary text-primary-content"
+                      : "bg-base-200/50 backdrop-blur-sm border border-base-300/50"
+                  }`}
                 >
                   <div className="whitespace-pre-wrap">{message.content}</div>
 
@@ -276,8 +283,8 @@ export default function AIChatPage() {
 
             {/* Loading indicator */}
             {isLoading && messages[messages.length - 1]?.role === "user" && (
-              <div className="chat chat-start">
-                <div className="chat-bubble chat-bubble-secondary">
+              <div className="flex justify-start">
+                <div className="max-w-[80%] rounded-2xl px-4 py-3 bg-base-200/50 backdrop-blur-sm border border-base-300/50">
                   <span className="loading loading-dots loading-sm"></span>
                 </div>
               </div>
@@ -288,35 +295,37 @@ export default function AIChatPage() {
 
           {/* Error Display */}
           {error && !errorDismissed && (
-            <div className="alert alert-error mx-4 mb-4">
-              <ExclamationCircleIcon className="w-6 h-6" aria-hidden="true" />
-              <span>{error.message || "An error occurred. Please try again."}</span>
-              <button
-                type="button"
-                className="btn btn-sm btn-ghost"
-                onClick={() => setErrorDismissed(true)}
-                aria-label="Dismiss error message"
-              >
-                Dismiss
-              </button>
+            <div className="mx-6 mb-4">
+              <div className="alert alert-error">
+                <ExclamationCircleIcon className="w-6 h-6" aria-hidden="true" />
+                <span>{error.message || "An error occurred. Please try again."}</span>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-ghost"
+                  onClick={() => setErrorDismissed(true)}
+                  aria-label="Dismiss error message"
+                >
+                  Dismiss
+                </button>
+              </div>
             </div>
           )}
 
           {/* Message Input */}
-          <form onSubmit={onSubmit} className="p-4 border-t border-base-300">
-            <div className="flex gap-2">
+          <form onSubmit={onSubmit} className="p-6 border-t border-base-300/50 bg-base-100/30 backdrop-blur-sm">
+            <div className="flex gap-3">
               <textarea
                 value={inputValue}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
                 placeholder="Type your message... (Enter to send, Shift+Enter for new line)"
-                className="textarea textarea-bordered flex-1 resize-none"
+                className="textarea textarea-bordered flex-1 resize-none bg-base-200/50 backdrop-blur-sm border-base-300/50 focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
                 rows={3}
                 disabled={isLoading}
               />
               <button
                 type="submit"
-                className="btn btn-primary"
+                className="btn btn-primary self-end"
                 disabled={isLoading || !inputValue.trim()}
                 aria-label="Send message"
               >
@@ -327,10 +336,10 @@ export default function AIChatPage() {
                 )}
               </button>
             </div>
-            <p className="text-xs text-base-content/60 mt-2">Press Enter to send, Shift+Enter for new line</p>
+            <p className="text-xs text-muted-foreground mt-2">Press Enter to send, Shift+Enter for new line</p>
           </form>
-        </div>
+        </CardGlass>
       </div>
-    </div>
+    </main>
   );
 }
