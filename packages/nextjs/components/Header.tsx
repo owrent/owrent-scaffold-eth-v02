@@ -46,13 +46,15 @@ export const HeaderMenuLinks = () => {
       {menuLinks.map(({ label, href, icon }) => {
         const isActive = pathname === href;
         return (
-          <li key={href}>
+          <li key={href} role="none">
             <Link
               href={href}
               passHref
               className={`${
                 isActive ? "bg-secondary shadow-md" : ""
-              } hover:bg-secondary hover:shadow-md focus:!bg-secondary active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
+              } hover:bg-secondary hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col transition-all duration-150`}
+              aria-current={isActive ? "page" : undefined}
+              role="menuitem"
             >
               {icon && <span aria-hidden="true">{icon}</span>}
               <span>{label}</span>
@@ -92,10 +94,12 @@ export const CivicAuthButton = () => {
         <button
           type="button"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="flex items-center gap-2 px-3 py-2 rounded-full glass-hover transition-all duration-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-          aria-label="User menu"
-          aria-expanded={isDropdownOpen}
+          className="flex items-center gap-2 px-3 py-2 rounded-full glass-hover transition-all duration-300 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          aria-label={`User menu${user.name ? ` for ${user.name}` : ""}`}
+          aria-expanded={isDropdownOpen ? "true" : "false"}
           aria-haspopup="true"
+          aria-controls="user-menu-dropdown"
+          id="user-menu-button"
         >
           <div className="flex flex-col items-end">
             {user.name && <span className="text-sm font-medium hidden sm:block">{user.name}</span>}
@@ -119,12 +123,13 @@ export const CivicAuthButton = () => {
         {/* Glassmorphism Dropdown */}
         {isDropdownOpen && (
           <div
-            className="absolute right-0 mt-2 w-56 glass-card rounded-2xl shadow-lg z-50 overflow-hidden"
+            id="user-menu-dropdown"
+            className="absolute right-0 mt-2 w-56 glass-card rounded-2xl shadow-lg z-50 overflow-hidden animate-slide-down"
             role="menu"
             aria-orientation="vertical"
-            aria-labelledby="user-menu"
+            aria-labelledby="user-menu-button"
           >
-            <div className="p-4 border-b border-base-300/20">
+            <div className="p-4 border-b border-base-300/20" role="presentation">
               <div className="flex flex-col space-y-1">
                 {user.name && <span className="text-sm font-semibold">{user.name}</span>}
                 {user.email && <span className="text-xs opacity-70">{user.email}</span>}
@@ -138,7 +143,7 @@ export const CivicAuthButton = () => {
                   signOut();
                   setIsDropdownOpen(false);
                 }}
-                className="w-full text-left px-4 py-2 text-sm rounded-lg hover:bg-base-200/50 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-inset"
+                className="w-full text-left px-4 py-2 text-sm rounded-lg hover:bg-base-200/50 transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
                 role="menuitem"
               >
                 Sign Out
@@ -155,8 +160,8 @@ export const CivicAuthButton = () => {
     <button
       type="button"
       onClick={() => signIn()}
-      className="btn btn-sm btn-primary shadow-md hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-      aria-label="Connect wallet"
+      className="btn btn-sm btn-primary shadow-md hover:shadow-lg transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+      aria-label="Connect wallet to sign in"
     >
       Connect Wallet
     </button>
@@ -176,14 +181,14 @@ export const Header = () => {
   });
 
   return (
-    <div className="header-glass navbar min-h-0 shrink-0 justify-between px-0 sm:px-2">
-      <div className="navbar-start w-auto lg:w-1/2">
+    <header className="header-glass navbar min-h-0 shrink-0 justify-between px-0 sm:px-2" role="banner">
+      <nav className="navbar-start w-auto lg:w-1/2" aria-label="Main navigation">
         <details className="dropdown" ref={burgerMenuRef}>
           <summary
-            className="ml-1 btn btn-ghost lg:hidden hover:bg-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            className="ml-1 btn btn-ghost lg:hidden hover:bg-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             aria-label="Open navigation menu"
           >
-            <Bars3Icon className="h-5 w-5" />
+            <Bars3Icon className="h-5 w-5" aria-hidden="true" />
           </summary>
           <ul
             className="menu menu-compact dropdown-content mt-3 p-2 glass-card rounded-2xl shadow-lg w-52"
@@ -195,23 +200,28 @@ export const Header = () => {
             <HeaderMenuLinks />
           </ul>
         </details>
-        <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
+        <Link
+          href="/"
+          passHref
+          className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg"
+          aria-label="Scaffold-ETH home"
+        >
           <div className="flex relative w-10 h-10">
-            <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" />
+            <Image alt="Scaffold-ETH logo" className="cursor-pointer" fill src="/logo.svg" />
           </div>
           <div className="flex flex-col">
             <span className="font-bold leading-tight">Scaffold-ETH</span>
             <span className="text-xs">Ethereum dev stack</span>
           </div>
         </Link>
-        <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
+        <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2 list-none" role="menubar">
           <HeaderMenuLinks />
         </ul>
-      </div>
+      </nav>
       <div className="navbar-end grow mr-4 flex items-center gap-2">
         <CivicAuthButton />
         {isLocalNetwork && <FaucetButton />}
       </div>
-    </div>
+    </header>
   );
 };

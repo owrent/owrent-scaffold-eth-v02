@@ -937,14 +937,42 @@
   }
 }
 
-/* Focus visible styles for keyboard navigation - Requirements 11.5 */
+/* Focus visible styles for keyboard navigation - Requirements 14.1, 14.4 */
 *:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
 
-/* Skip to main content link for accessibility */
+/* Enhanced focus styles for interactive elements */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible,
+[role="link"]:focus-visible,
+[role="menuitem"]:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(147, 187, 251, 0.2);
+}
+
+/* Focus styles for dark mode */
+[data-theme="dark"] button:focus-visible,
+[data-theme="dark"] a:focus-visible,
+[data-theme="dark"] input:focus-visible,
+[data-theme="dark"] textarea:focus-visible,
+[data-theme="dark"] select:focus-visible,
+[data-theme="dark"] [role="button"]:focus-visible,
+[data-theme="dark"] [role="link"]:focus-visible,
+[data-theme="dark"] [role="menuitem"]:focus-visible,
+[data-theme="dark"] [tabindex]:not([tabindex="-1"]):focus-visible {
+  box-shadow: 0 0 0 4px rgba(147, 187, 251, 0.3);
+}
+
+/* Skip to main content link for accessibility - Requirements 14.4 */
 .skip-to-main {
   position: absolute;
   left: -9999px;
@@ -954,9 +982,55 @@
   color: var(--color-primary-content);
   text-decoration: none;
   border-radius: var(--radius-lg);
+  font-weight: var(--font-weight-semibold);
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition-fast);
 }
 
 .skip-to-main:focus {
   left: var(--spacing-4);
   top: var(--spacing-4);
+  outline: 2px solid var(--color-primary-content);
+  outline-offset: 2px;
+}
+
+/* Screen reader only content - Requirements 14.5 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Keyboard navigation helpers - Requirements 14.4 */
+.keyboard-focusable:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Remove focus outline for mouse users, keep for keyboard users */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}
+
+/* High contrast mode support - Requirements 14.1 */
+@media (prefers-contrast: high) {
+  *:focus-visible {
+    outline-width: 3px;
+    outline-offset: 3px;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline-width: 3px;
+    box-shadow: 0 0 0 6px rgba(147, 187, 251, 0.4);
+  }
 }

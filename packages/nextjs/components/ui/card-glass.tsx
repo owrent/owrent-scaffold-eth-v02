@@ -44,6 +44,36 @@ export const CardGlass: React.FC<CardGlassProps> = ({ children, className, hover
   // Performance optimization: will-change for hover states (Requirements 17.5)
   const performanceStyles = hover ? "will-change-[box-shadow,transform]" : "";
 
+  // Accessibility: focus styles for interactive cards
+  const focusStyles = onClick
+    ? "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+    : "";
+
+  // If clickable, render as button for proper semantics
+  if (onClick) {
+    return (
+      <button
+        type="button"
+        className={cn(
+          baseStyles,
+          lightStyles,
+          lightHoverStyles,
+          darkStyles,
+          darkHoverStyles,
+          backdropStyles,
+          fallbackStyles,
+          performanceStyles,
+          focusStyles,
+          "cursor-pointer text-left w-full",
+          className,
+        )}
+        onClick={onClick}
+      >
+        {children}
+      </button>
+    );
+  }
+
   return (
     <div
       className={cn(
@@ -55,10 +85,8 @@ export const CardGlass: React.FC<CardGlassProps> = ({ children, className, hover
         backdropStyles,
         fallbackStyles,
         performanceStyles,
-        onClick && "cursor-pointer",
         className,
       )}
-      onClick={onClick}
     >
       {children}
     </div>
