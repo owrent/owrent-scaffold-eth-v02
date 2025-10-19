@@ -13,7 +13,7 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
   return (
     <html suppressHydrationWarning className={``}>
       <body>
-        <ThemeProvider enableSystem>
+        <ThemeProvider attribute="data-theme" defaultTheme="light" enableSystem={true} storageKey="owrent-theme">
           <CivicAuthProvider>
             <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>
           </CivicAuthProvider>

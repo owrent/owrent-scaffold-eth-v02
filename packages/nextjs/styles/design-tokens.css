@@ -1,0 +1,165 @@
+/**
+ * Glassmorphism Design Tokens
+ * Core design system variables for Owrent UI
+ */
+
+:root {
+  /* Color Palette - Light Mode */
+  --color-primary: #6366f1;
+  --color-primary-hover: #4f46e5;
+  --color-secondary: #8b5cf6;
+  --color-accent: #06b6d4;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  
+  /* Neutral Colors - Light Mode */
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-tertiary: #94a3b8;
+  --color-border: #e2e8f0;
+  
+  /* Glassmorphism Effects - Light Mode */
+  --glass-background: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  --glass-backdrop-blur: 12px;
+  
+  /* Card Glassmorphism - Light Mode */
+  --card-glass-background: rgba(255, 255, 255, 0.8);
+  --card-glass-border: rgba(255, 255, 255, 0.25);
+  --card-glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+  
+  /* Modal Glassmorphism - Light Mode */
+  --modal-glass-background: rgba(255, 255, 255, 0.85);
+  --modal-glass-border: rgba(255, 255, 255, 0.3);
+  --modal-backdrop: rgba(15, 23, 42, 0.5);
+  
+  /* Spacing Scale */
+  --spacing-xs: 0.25rem;    /* 4px */
+  --spacing-sm: 0.5rem;     /* 8px */
+  --spacing-md: 1rem;       /* 16px */
+  --spacing-lg: 1.5rem;     /* 24px */
+  --spacing-xl: 2rem;       /* 32px */
+  --spacing-2xl: 3rem;      /* 48px */
+  --spacing-3xl: 4rem;      /* 64px */
+  
+  /* Border Radius */
+  --radius-sm: 0.375rem;    /* 6px */
+  --radius-md: 0.5rem;      /* 8px */
+  --radius-lg: 0.75rem;     /* 12px */
+  --radius-xl: 1rem;        /* 16px */
+  --radius-2xl: 1.5rem;     /* 24px */
+  --radius-full: 9999px;
+  
+  /* Typography Scale */
+  --font-size-xs: 0.75rem;      /* 12px */
+  --font-size-sm: 0.875rem;     /* 14px */
+  --font-size-base: 1rem;       /* 16px */
+  --font-size-lg: 1.125rem;     /* 18px */
+  --font-size-xl: 1.25rem;      /* 20px */
+  --font-size-2xl: 1.5rem;      /* 24px */
+  --font-size-3xl: 1.875rem;    /* 30px */
+  --font-size-4xl: 2.25rem;     /* 36px */
+  
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* Line Heights */
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Z-Index Scale */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+  /* Color Palette - Dark Mode */
+  --color-primary: #818cf8;
+  --color-primary-hover: #6366f1;
+  --color-secondary: #a78bfa;
+  --color-accent: #22d3ee;
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
+  --color-error: #f87171;
+  
+  /* Neutral Colors - Dark Mode */
+  --color-background: #0f172a;
+  --color-surface: #1e293b;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #cbd5e1;
+  --color-text-tertiary: #64748b;
+  --color-border: #334155;
+  
+  /* Glassmorphism Effects - Dark Mode */
+  --glass-background: rgba(30, 41, 59, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --glass-backdrop-blur: 12px;
+  
+  /* Card Glassmorphism - Dark Mode */
+  --card-glass-background: rgba(30, 41, 59, 0.8);
+  --card-glass-border: rgba(255, 255, 255, 0.15);
+  --card-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  
+  /* Modal Glassmorphism - Dark Mode */
+  --modal-glass-background: rgba(30, 41, 59, 0.9);
+  --modal-glass-border: rgba(255, 255, 255, 0.2);
+  --modal-backdrop: rgba(0, 0, 0, 0.7);
+}
+
+/* Glassmorphism Utility Classes */
+.glass {
+  background: var(--glass-background);
+  backdrop-filter: blur(var(--glass-backdrop-blur));
+  -webkit-backdrop-filter: blur(var(--glass-backdrop-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.glass-card {
+  background: var(--card-glass-background);
+  backdrop-filter: blur(var(--glass-backdrop-blur));
+  -webkit-backdrop-filter: blur(var(--glass-backdrop-blur));
+  border: 1px solid var(--card-glass-border);
+  box-shadow: var(--card-glass-shadow);
+  border-radius: var(--radius-xl);
+}
+
+.glass-modal {
+  background: var(--modal-glass-background);
+  backdrop-filter: blur(var(--glass-backdrop-blur));
+  -webkit-backdrop-filter: blur(var(--glass-backdrop-blur));
+  border: 1px solid var(--modal-glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius-2xl);
+}
+
+.glass-hover {
+  transition: all var(--transition-base);
+}
+
+.glass-hover:hover {
+  background: var(--glass-background);
+  border-color: var(--color-primary);
+  box-shadow: 0 12px 40px 0 rgba(99, 102, 241, 0.2);
+  transform: translateY(-2px);
+}
