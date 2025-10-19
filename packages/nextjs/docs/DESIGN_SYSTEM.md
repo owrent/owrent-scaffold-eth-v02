@@ -19,7 +19,7 @@ The Owrent design system is built on glassmorphism principles, providing a moder
 The theme system is configured in `app/layout.tsx` with the following settings:
 
 ```typescript
-<ThemeProvider 
+<ThemeProvider
   attribute="data-theme"           // Uses data-theme attribute for styling
   defaultTheme="light"             // Defaults to light mode
   enableSystem={true}              // Respects system preferences
@@ -36,7 +36,7 @@ import { useTheme } from "~~/hooks/useTheme";
 
 function MyComponent() {
   const { isDark, toggleTheme, getGlassStyles } = useTheme();
-  
+
   return (
     <div style={getGlassStyles("card")}>
       <button onClick={toggleTheme}>
@@ -62,39 +62,35 @@ The theme system supports:
 ### CSS Classes
 
 #### `.glass`
+
 Basic glassmorphism effect for any element.
 
 ```html
-<div className="glass p-4 rounded-lg">
-  Content with glass effect
-</div>
+<div className="glass p-4 rounded-lg">Content with glass effect</div>
 ```
 
 #### `.glass-card`
+
 Glassmorphism card with enhanced styling.
 
 ```html
-<div className="glass-card p-6">
-  Card content
-</div>
+<div className="glass-card p-6">Card content</div>
 ```
 
 #### `.glass-modal`
+
 Glassmorphism modal with maximum opacity.
 
 ```html
-<div className="glass-modal p-8">
-  Modal content
-</div>
+<div className="glass-modal p-8">Modal content</div>
 ```
 
 #### `.glass-hover`
+
 Interactive glassmorphism with hover effects.
 
 ```html
-<button className="glass-card glass-hover p-4">
-  Hover me
-</button>
+<button className="glass-card glass-hover p-4">Hover me</button>
 ```
 
 ### JavaScript Styles
@@ -104,7 +100,7 @@ import { useTheme } from "~~/hooks/useTheme";
 
 function MyComponent() {
   const { getGlassStyles } = useTheme();
-  
+
   return (
     <div style={getGlassStyles("card")}>
       Programmatic glass styles
@@ -118,65 +114,43 @@ function MyComponent() {
 ### Glassmorphism Variables
 
 #### Light Mode
+
 ```css
---glass-bg: rgb(255 255 255 / 0.7)
---glass-border: rgb(255 255 255 / 0.18)
---glass-shadow: 0 8px 32px rgb(31 38 135 / 0.15)
---glass-blur: 12px
-
---card-glass-bg: rgb(255 255 255 / 0.8)
---card-glass-border: rgb(255 255 255 / 0.25)
---card-glass-shadow: 0 8px 32px rgb(31 38 135 / 0.1)
-
---modal-glass-bg: rgb(255 255 255 / 0.85)
---modal-glass-border: rgb(255 255 255 / 0.3)
---modal-backdrop: rgb(15 23 42 / 0.5)
+--glass-bg: rgb(255 255 255 / 0.7) --glass-border: rgb(255 255 255 / 0.18) --glass-shadow: 0 8px 32px
+  rgb(31 38 135 / 0.15) --glass-blur: 12px --card-glass-bg: rgb(255 255 255 / 0.8)
+  --card-glass-border: rgb(255 255 255 / 0.25) --card-glass-shadow: 0 8px 32px rgb(31 38 135 / 0.1)
+  --modal-glass-bg: rgb(255 255 255 / 0.85) --modal-glass-border: rgb(255 255 255 / 0.3)
+  --modal-backdrop: rgb(15 23 42 / 0.5);
 ```
 
 #### Dark Mode
+
 ```css
---glass-bg: rgb(30 41 59 / 0.7)
---glass-border: rgb(255 255 255 / 0.1)
---glass-shadow: 0 8px 32px rgb(0 0 0 / 0.37)
-
---card-glass-bg: rgb(30 41 59 / 0.8)
---card-glass-border: rgb(255 255 255 / 0.15)
---card-glass-shadow: 0 8px 32px rgb(0 0 0 / 0.3)
-
---modal-glass-bg: rgb(30 41 59 / 0.9)
---modal-glass-border: rgb(255 255 255 / 0.2)
---modal-backdrop: rgb(0 0 0 / 0.7)
+--glass-bg: rgb(30 41 59 / 0.7) --glass-border: rgb(255 255 255 / 0.1) --glass-shadow: 0 8px 32px rgb(0 0 0 / 0.37)
+  --card-glass-bg: rgb(30 41 59 / 0.8) --card-glass-border: rgb(255 255 255 / 0.15) --card-glass-shadow: 0 8px 32px
+  rgb(0 0 0 / 0.3) --modal-glass-bg: rgb(30 41 59 / 0.9) --modal-glass-border: rgb(255 255 255 / 0.2)
+  --modal-backdrop: rgb(0 0 0 / 0.7);
 ```
 
 ### Spacing Scale
 
 ```css
---spacing-xs: 0.25rem   /* 4px */
---spacing-sm: 0.5rem    /* 8px */
---spacing-md: 1rem      /* 16px */
---spacing-lg: 1.5rem    /* 24px */
---spacing-xl: 2rem      /* 32px */
---spacing-2xl: 3rem     /* 48px */
---spacing-3xl: 4rem     /* 64px */
+--spacing-xs: 0.25rem /* 4px */ --spacing-sm: 0.5rem /* 8px */ --spacing-md: 1rem /* 16px */ --spacing-lg: 1.5rem
+  /* 24px */ --spacing-xl: 2rem /* 32px */ --spacing-2xl: 3rem /* 48px */ --spacing-3xl: 4rem /* 64px */;
 ```
 
 ### Border Radius
 
 ```css
---radius-sm: 0.375rem   /* 6px */
---radius-md: 0.5rem     /* 8px */
---radius-lg: 0.625rem   /* 10px */
---radius-xl: 0.875rem   /* 14px */
---radius-2xl: 1rem      /* 16px */
---radius-3xl: 1.5rem    /* 24px */
+--radius-sm: 0.375rem /* 6px */ --radius-md: 0.5rem /* 8px */ --radius-lg: 0.625rem /* 10px */ --radius-xl: 0.875rem
+  /* 14px */ --radius-2xl: 1rem /* 16px */ --radius-3xl: 1.5rem /* 24px */;
 ```
 
 ### Transitions
 
 ```css
---transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1)
---transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1)
---transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1)
+--transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1) --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1)
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
 ```
 
 ## Component Examples
@@ -185,11 +159,7 @@ function MyComponent() {
 
 ```tsx
 export const GlassCard = ({ children, className = "" }) => {
-  return (
-    <div className={`glass-card p-6 ${className}`}>
-      {children}
-    </div>
-  );
+  return <div className={`glass-card p-6 ${className}`}>{children}</div>;
 };
 ```
 
@@ -198,10 +168,7 @@ export const GlassCard = ({ children, className = "" }) => {
 ```tsx
 export const GlassButton = ({ children, onClick, className = "" }) => {
   return (
-    <button 
-      onClick={onClick}
-      className={`glass-card glass-hover px-6 py-3 ${className}`}
-    >
+    <button onClick={onClick} className={`glass-card glass-hover px-6 py-3 ${className}`}>
       {children}
     </button>
   );
@@ -213,13 +180,11 @@ export const GlassButton = ({ children, onClick, className = "" }) => {
 ```tsx
 export const GlassModal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
-  
+
   return (
     <div className="fixed inset-0 z-[1040]" style={{ background: "var(--modal-backdrop)" }}>
       <div className="flex items-center justify-center min-h-screen p-4">
-        <div className="glass-modal max-w-lg w-full p-8">
-          {children}
-        </div>
+        <div className="glass-modal max-w-lg w-full p-8">{children}</div>
       </div>
     </div>
   );
@@ -269,6 +234,7 @@ For unsupported browsers, fallback to solid backgrounds:
 ### Contrast Ratios
 
 All text on glass surfaces maintains WCAG AA compliance:
+
 - Normal text: 4.5:1 minimum
 - Large text: 3:1 minimum
 - Interactive elements: 3:1 minimum
@@ -310,7 +276,7 @@ Respect user preferences for reduced motion:
 
 ```typescript
 // Monitor paint performance
-const observer = new PerformanceObserver((list) => {
+const observer = new PerformanceObserver(list => {
   for (const entry of list.getEntries()) {
     console.log("Paint time:", entry.duration);
   }
@@ -331,17 +297,15 @@ observer.observe({ entryTypes: ["paint"] });
 ### Example Migration
 
 **Before:**
+
 ```tsx
-<div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-  Content
-</div>
+<div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">Content</div>
 ```
 
 **After:**
+
 ```tsx
-<div className="glass-card p-6">
-  Content
-</div>
+<div className="glass-card p-6">Content</div>
 ```
 
 ## Resources

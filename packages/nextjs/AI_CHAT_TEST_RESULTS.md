@@ -288,8 +288,8 @@ Test on different screen sizes:
 
 ## Sign-Off
 
-**Tester Signature**: ************\_\_\_************  
-**Date**: ************\_\_\_************
+**Tester Signature**: ****\*\*\*\*****\_\_\_****\*\*\*\*****  
+**Date**: ****\*\*\*\*****\_\_\_****\*\*\*\*****
 
 **Status**: [ ] APPROVED FOR DEPLOYMENT / [ ] REQUIRES FIXES
 
@@ -306,7 +306,7 @@ Test on different screen sizes:
 - [ ] Slack
 - [ ] Notion
 - [ ] Google Drive
-- [ ] Other: ******\_\_\_******
+- [ ] Other: **\*\***\_\_\_**\*\***
 
 ### Sample Messages Tested
 
